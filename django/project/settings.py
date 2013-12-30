@@ -26,8 +26,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'wereldontdooien'
 )
-
-GRAPPELLI_ADMIN_TITLE = 'Wereldontdooien - Beheer'
  
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -65,6 +63,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_ROOT = '/srv/wereldontdooien'
+MEDIA_URL = '/media/'
 CKEDITOR_UPLOAD_PATH = "/srv/wereldontdooien"
 
 CKEDITOR_CONFIGS = {
