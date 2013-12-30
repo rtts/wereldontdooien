@@ -2,5 +2,7 @@
 <resources>
 
     <string name="app_name">Wereld Ontdooien</string>
+    <string name="notification_title">Ontdooi-moment van de dag</string>
+    <string name="notification_text">Het is tijd voor je dagelijkse portie ontdooien!</string>
 
 </resources>
