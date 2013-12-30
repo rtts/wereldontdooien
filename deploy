@@ -2,7 +2,7 @@
 from r2src.deploy import *
 
 host = 'wereldontdooien.nl'
-aliases = 'www.wereldontdooien.nl'
+aliases = ['www.wereldontdooien.nl']
 
 bootstrap()
 install('python-dev postgresql postgresql-server-dev-all')
