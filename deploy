@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+from r2src.deploy import *
+
+host = 'wereldontdooien.nl'
+aliases = 'www.wereldontdooien.nl'
+
+bootstrap()
+install('python-dev postgresql postgresql-server-dev-all libjpeg-dev')
+setup_virtualenv('wereldontdooien')
+
+explain("Checking /srv/wereldontdooien")
+dir_exists('/srv/moniquebroekman')
+done()
+
+explain("Checking database user 'wereldontdooien'...")
+with settings(hide('warnings'), sudo_user='postgres', warn_only=True):
+    if sudo('psql -tc "select * from pg_user where usename = \'wereldontdooien\';" | grep -q monique').failed:
+        sudo('createuser -SRD wereldontdooien')
+    # creating db's simply fails if they already exist
+    sudo('createdb -O wereldontdooien wereldontdooien')
+    sudo('createdb -O wereldontdooien wereldontdooien')
+done()
+
+upload()
+
+explain("Collecting static files...")
+with cd(abspath('django')):
+    vrun('wereldontdooien', './manage.py collectstatic')
+done()
+
+explain("Syncing database...")
+with cd(abspath('django')):
+    vrun('wereldontdooien', './manage.py syncdb')
+done()
+
+serve_dynamically(host, virtualenv='wereldontdooien', static_dir=abspath('django/static'), chdir=abspath('django'), wsgi_file='project/wsgi.py')
+
+done('Deployment complete!')

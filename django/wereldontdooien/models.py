@@ -1,12 +1,12 @@
 from django.db import models
 from django.utils.html import strip_tags
-from ckeditor.fiels import RichTextField
+from ckeditor.fields import RichTextField
 from adminsortable.models import Sortable
 
-class Dagelijks_gelukmomentje(Sortable):
+class Moment(Sortable):
     aangemaakt = models.DateTimeField(auto_now_add=True)
     gewijzigd = models.DateTimeField(auto_now=True)
-    gepubliceerd = models.DateTimeField(blank=True)
+    gepubliceerd = models.DateTimeField(null=True, blank=True)
     zichtbaar = models.BooleanField(default=False)
     type = models.IntegerField(choices=(
             (1, "Spreuk"),
@@ -16,10 +16,10 @@ class Dagelijks_gelukmomentje(Sortable):
             (5, "Kadootje"),
             (6, "Complimentje"),
             (7, "Overig"),
-            )
+            ))
     inhoud = RichTextField()
     def __unicode__(self):
         return strip_tags(self.inhoud)
     class Meta(Sortable.Meta):
-        verbose_name_plural = "dagelijkse gelukmomentjes"
-        pass
+        verbose_name = "dagelijks geluksmomentje"
+        verbose_name_plural = "dagelijkse geluksmomentjes"

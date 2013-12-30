@@ -9,19 +9,22 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, "templates"),
+)
+
 INSTALLED_APPS = (
     'ckeditor',
     'adminsortable',
     'django_extensions',
-    'grappelli',
+#    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.extensions',
-    'messages'
+    'wereldontdooien'
 )
 
 GRAPPELLI_ADMIN_TITLE = 'Wereldontdooien - Beheer'
@@ -58,7 +61,11 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+# STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 MEDIA_ROOT = '/srv/wereldontdooien'
+CKEDITOR_UPLOAD_PATH = "/srv/wereldontdooien"
 
 CKEDITOR_CONFIGS = {
     'default': {
