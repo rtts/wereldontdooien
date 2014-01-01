@@ -31,6 +31,6 @@ with cd(abspath('django')):
     vrun('wereldontdooien', './manage.py syncdb')
 done()
 
-serve_dynamically(host, virtualenv='wereldontdooien', static_dir=abspath('django/static'), chdir=abspath('django'), wsgi_file='project/wsgi.py')
+serve_dynamically(host, virtualenv='wereldontdooien', static_dir=abspath('django/static'), chdir=abspath('django'), wsgi_file='project/wsgi.py', aliases=aliases)
 
 done('Deployment complete!')
