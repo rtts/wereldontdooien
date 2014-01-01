@@ -14,7 +14,6 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'ckeditor',
     'adminsortable',
     'django_extensions',
 #    'grappelli',
@@ -59,27 +58,8 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "files"),)
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_ROOT = '/srv/wereldontdooien'
 MEDIA_URL = '/media/'
-CKEDITOR_UPLOAD_PATH = "/srv/wereldontdooien"
-
-CKEDITOR_CONFIGS = {
-    'default': {
-        'autoGrow_onStartup': True,
-        'forcePasteAsPlainText': True,
-        'contentsCss': '/static/main.css', # sorry, should've computed this
-        'toolbar_Full': [
-            ['Format', 'Bold', 'Italic', 'Underline', 'RemoveFormat'],
-            ['Link', 'Image', 'Blockquote', 'Table', 'HorizontalRule'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
-            ['Find', 'Replace', 'Scayt'],
-            ['Source'],
-            ],
-        'toolbar': 'Full',
-        'height': 400,
-        'width': '100%'
-        }
-    }
