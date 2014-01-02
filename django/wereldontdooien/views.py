@@ -1,16 +1,43 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from wereldontdooien.models import Fonkel
 
-# Create your views here.
 def home(request):
-    return HttpResponse('<img src="/media/32.jpg"/>')
+    [previous, current] = Fonkel.objects.filter(gepubliceerd__isnull=False)[:2]
+    return render(request, "index.html", {
+            "fonkel": current,
+            "previous": previous,
+            "next": False,
+            })
 
 def moment(request, nr):
-    return HttpResponse("Jouw adem ruikt...")
+    fonkel = get_object_or_404(Fonkel, order=nr)
+    try:
+        previous = (Fonkel.objects
+                    .order_by("-order")
+                    .filter(gepubliceerd__isnull=False)
+                    .filter.(order__lt=nr)[0]
+                    )
+    except Fonkel.DoesNotExist:
+        previous = False
+
+    try:
+        next = (Fonkel.objects
+                .order_by("order")
+                .filter(gepubliceerd__isnull=False)
+                .filter.(order__gt=nr)[0]
+                )
+    except Fonkel.DoesNotExist:
+        next = False
+
+    return render(request, "index.html", {
+            "fonkel": fonkel,
+            "previous": previous,
+            "next": next,
+            })
 
 def random(request):
-    return HttpResponse("Laat jezelf verrassen!")
+    fonkel = Fonkel.objects.order_by("?").filter(gepubliceerd__isnull=False)[0]
+    return redirect(fonkel)
 
 def about(request):
-    return HttpResponse("Wij zijn de Wereldontdooisters")
-
+    render(request, "info.html", {})

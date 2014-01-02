@@ -26,6 +26,9 @@ class Fonkel(Sortable):
     def __unicode__(self):
         return self.tekst
 
+    def get_absolute_url(self):
+        return "/%i/" % self.order
+
 #    class Meta(Sortable.Meta):
 #        verbose_name = "dagelijks geluksmomentje"
 #        verbose_name_plural = "dagelijkse geluksmomentjes"

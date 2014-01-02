@@ -7,9 +7,9 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     url(r'^$', 'wereldontdooien.views.home', name='home'),
-    url(r'^([0-9]+)/$', 'wereldontdooien.views.moment', name='moment'),
+    url(r'^([0-9]+)/$', 'wereldontdooien.views.fonkel', name='fonkel'),
     url(r'^verrassing/$', 'wereldontdooien.views.random', name='random'), # ?type=1
-    url(r'^achtergrond/$', 'wereldontdooien.views.about', name='about'),
+    url(r'^info/$', 'wereldontdooien.views.info', name='info'),
 
     url(r'^beheer/', include(admin.site.urls)),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

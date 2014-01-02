@@ -5,7 +5,7 @@ host = 'wereldontdooien.nl'
 aliases = ['www.wereldontdooien.nl']
 
 bootstrap()
-install('python-dev postgresql postgresql-server-dev-all')
+install('python-dev postgresql postgresql-server-dev-all gettext')
 setup_virtualenv('wereldontdooien')
 
 explain("Checking /srv/wereldontdooien")
@@ -15,7 +15,6 @@ done()
 explain("Checking database user 'wereldontdooien'...")
 with settings(hide('warnings'), sudo_user='postgres', warn_only=True):
     sudo('createuser -SRD wereldontdooien')
-    sudo('createdb -O wereldontdooien wereldontdooien')
     sudo('createdb -O wereldontdooien wereldontdooien')
 done()
 
