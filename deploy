@@ -26,6 +26,11 @@ with cd(abspath('django')):
     vrun('wereldontdooien', './manage.py collectstatic')
 done()
 
+explain("Generating locales...")
+with cd(abspath('django')):
+    vrun('wereldontdooien', './manage.py compilemessages')
+done()
+
 explain("Syncing database...")
 with cd(abspath('django')):
     vrun('wereldontdooien', './manage.py syncdb')
