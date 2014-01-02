@@ -6,7 +6,7 @@ def imgfile(instance, filename):
     ext = filename.split('.')[-1]
     return '{}.{}'.format(uuid4().hex, ext)
 
-class Moment(Sortable):
+class Fonkel(Sortable):
     aangemaakt = models.DateTimeField(auto_now_add=True)
     gewijzigd = models.DateTimeField(auto_now=True)
     gepubliceerd = models.DateTimeField(null=True, blank=True)
@@ -26,6 +26,6 @@ class Moment(Sortable):
     def __unicode__(self):
         return self.tekst
 
-    class Meta(Sortable.Meta):
-        verbose_name = "dagelijks geluksmomentje"
-        verbose_name_plural = "dagelijkse geluksmomentjes"
+#    class Meta(Sortable.Meta):
+#        verbose_name = "dagelijks geluksmomentje"
+#        verbose_name_plural = "dagelijkse geluksmomentjes"

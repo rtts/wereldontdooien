@@ -1,0 +1,17 @@
+{% extends "admin/change_form.html" %}
+{% block content %}
+
+<div style="background: #FDEFFF; padding: 20px; padding-right: 20%">
+<h1>Wat is een fonkel?</h1>
+<p>
+  Een fonkel bestaat uit een <i>vierkant</i> plaatje met daarop een tekst die in een van de onderstaande categorieën valt. Het plaatje moet je zelf ontwerpen. Een handige dienst hiervoor is <a href="http://www.picmonkey.com/">PicMonkey</a>.
+</p>
+<p>
+  Kies bij <a href="http://www.picmonkey.com/">PicMonkey</a> eerst voor “edit photo” waarna je een plaatje kunt uploaden. Crop daarna het plaatje tot een vierkant (Basic Edits → Crop → Square). Vervolgens kun je met de “Text” tool de tekst erop zetten. Je kunt de uiteindelijke fonkel downloaden met de “save”-knop.
+</p>
+<p>
+  Hieronder kun je de gedownloade fonkel weer uploaden. Ook moet je een type fonkel selecteren en de tekst opgeven die in de fonkel staat. Nieuwe fonkels verschijnen automatisch onderaan de lijst. Je kunt de volgorde veranderen door boven de lijst op “Volgorde veranderen” te klikken.
+</div>
+
+{{ block.super }}
+{% endblock %}

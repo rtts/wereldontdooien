@@ -16,7 +16,6 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'adminsortable',
     'django_extensions',
-#    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,15 +46,14 @@ DATABASES = {
     }
 }
 
-LANGUAGE_CODE = 'nl'
-
+USE_TZ = True
 TIME_ZONE = 'UTC'
 
+LANGUAGE_CODE = 'nl'
 USE_I18N = True
-
 USE_L10N = True
-
-USE_TZ = True
+LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
+print LOCALE_PATHS
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "files"),)

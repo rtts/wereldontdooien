@@ -1,14 +1,22 @@
 from django.contrib import admin
 from adminsortable.admin import SortableAdmin
-from wereldontdooien.models import Moment
+from wereldontdooien.models import Fonkel
+
+def gepubliceerd(moment):
+    return moment.gepubliceerd or ""
+
+def nummer(moment):
+    return moment.order
 
 class CustomAdmin(SortableAdmin):
-    list_display = ("zichtbaar", "aangemaakt", "gepubliceerd", "tekst", "type")
+    list_display = (nummer, "zichtbaar", "aangemaakt", gepubliceerd, "tekst", "type")
     list_display_links = ("tekst",)
     list_filter = ("type",)
     exclude = ("zichtbaar", "gepubliceerd")
+    class Media:
+        css = { "all": ("moment_admin.css",)}
 
-admin.site.register(Moment, CustomAdmin)
+admin.site.register(Fonkel, CustomAdmin)
 
 # hide the following from admin:
 
