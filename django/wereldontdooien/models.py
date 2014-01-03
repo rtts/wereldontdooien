@@ -33,6 +33,15 @@ class UnpublishedFonkel(Sortable, BaseFonkel):
     class Meta(Sortable.Meta):
         verbose_name = "toekomstige fonkel"
 
+    def publish(self):
+        published_fonkel = PublishedFonkel(
+            gebruiker = self.gebruiker,
+            tekst = self.tekst,
+            type = self.type,
+            afbeelding = self.afbeelding)
+        published_fonkel.save()
+        self.delete()
+
 class PublishedFonkel(BaseFonkel):
     zichtbaar = models.BooleanField(default=True)
 
