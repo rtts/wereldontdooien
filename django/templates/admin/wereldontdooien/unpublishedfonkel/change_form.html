@@ -12,13 +12,15 @@
 <p>
   Hieronder kun je de gedownloade fonkel weer uploaden. Ook moet je een type fonkel selecteren en de tekst opgeven die in de fonkel staat. Nieuwe fonkels verschijnen automatisch onderaan de lijst. Je kunt de volgorde veranderen door boven de lijst op “Volgorde veranderen” te klikken.
 </p>
+{% if original %} 
 <p>
 <form action="/publish/" method="POST">
-  <input type="submit" value="Publiceer"/>
+  <input type="submit" value="Publiceer handmatig deze fonkel"/>
   <input type="hidden" name="fonkel" value="{{ original.id }}"/>
   {% csrf_token %}
 </form>
 </p>
+{% endif %}
 </div>
 {{ block.super }}
 {% endblock %}

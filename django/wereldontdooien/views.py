@@ -63,4 +63,4 @@ def publish(request):
     if request.method == "POST":
         fonkel = get_object_or_404(UnpublishedFonkel, id=request.POST["fonkel"])
         published_fonkel = fonkel.publish()
-        return redirect(published_fonkel)
+        return redirect("/beheer/wereldontdooien/publishedfonkel")
