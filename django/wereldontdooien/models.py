@@ -49,5 +49,5 @@ class PublishedFonkel(BaseFonkel):
         return "/%i/" % self.id
 
     class Meta:
-        verbose_name = "bestaande fonkel"
+        verbose_name = "gepubliceerde fonkel"
         ordering = ["-id"]

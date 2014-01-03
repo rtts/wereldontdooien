@@ -5,10 +5,17 @@ body, html {
 
 div.inner {
     text-align: center;
-    height: 500px;
+    height: 530px;
     width: 500px;
+    max-height: 100%;
+    max-width: 100%;
     margin: auto;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
-    outline: 1px solid red;
+}
+
+div.nav {
+    width: 100px;
+    height: 30px;
+    display: inline-block;
 }

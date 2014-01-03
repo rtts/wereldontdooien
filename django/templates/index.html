@@ -1,12 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% if previous %}
-<a href="{% url previous %}">Vorige</a>
-{% endif %}
-<img width="500" height="500" alt="" src="{{current.afbeelding.url}}" />
-{% if next %}
-<a href="{% url next %}">Volgende</a>
-{% endif %}
+
+<div class="nav" style="float:left">
+  {% if previous %}
+  <a href="{{ previous.get_absolute_url }}">Vorige</a>
+  {% endif %}
+</div>
+
+<div class="nav" style="float:right">
+  {% if next %}
+  <a href="{{ next.get_absolute_url }}">Volgende</a>
+  {% endif %}
+</div>
+
+<div class="nav">
+  <a href="/verrassing">Verras me!</a>
+</div>
+
+
+<img width="100%" height="100%" alt="" src="{{current.afbeelding.url}}" />
 
 {% endblock %}
