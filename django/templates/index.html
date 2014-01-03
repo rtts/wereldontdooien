@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load url %}
+
+{% block content %}
+{% if previous %}
+<a href="{% url previous %}">Vorige</a>
+{% endif %}
+<img width="500" height="500" alt="" src="{{current.afbeelding.url}}" />
+{% if next %}
+<a href="{% url next %}">Volgende</a>
+{% endif %}
+
+{% endblock %}

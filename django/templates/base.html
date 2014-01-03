@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      {% block title %}Wereld Ontdooien - Elke dag een nieuwe fonkel!{% endblock %}
+    </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="/files/main.css" type="text/css"></link>
+    <link rel="stylesheet" href="/files/mobile.css" media="only screen and (max-device-width: 800px)" type="text/css"></link>
+    <link rel="stylesheet" href="/files/mobile.css" media="handheld" type="text/css" />
+    {% block extrahead %}{% endblock %}
+  </head>
+  <body>
+    {% block content %}
+    {% endblock %}
+  </body>
+</html>
