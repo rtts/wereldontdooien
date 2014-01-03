@@ -1,44 +1,56 @@
-from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from wereldontdooien.models import PublishedFonkel as Fonkel
 
 def home(request):
-#todo try catch
-    [current, previous] = Fonkel.objects.order_by("-order").filter(gepubliceerd__isnull=False)[:2]
-        
+    try:
+        [current, previous] = (Fonkel.objects
+                               .order_by("-id")
+                               .filter(zichtbaar=True)[:2]
+                               )
+    except ValueError:
+        return HttpResponse("Oh oh! De wereldontdooisters hebben nog geen fonkels toegevoegd!")
     return render(request, "index.html", {
-            "fonkel": current,
+            "current": current,
             "previous": previous,
             "next": False,
             })
 
 def fonkel(request, nr):
-    current = get_object_or_404(Fonkel, order=nr)
+    current = get_object_or_404(Fonkel, id=nr)
     try:
         previous = (Fonkel.objects
-                    .order_by("-order")
-                    .filter(gepubliceerd__isnull=False)
-                    .filter(order__lt=nr)[0]
+                    .order_by("-id")
+                    .filter(zichtbaar=True)
+                    .filter(id__lt=nr)[0]
                     )
     except Fonkel.DoesNotExist:
         previous = False
 
     try:
         next = (Fonkel.objects
-                .order_by("order")
-                .filter(gepubliceerd__isnull=False)
-                .filter(order__gt=nr)[0]
+                .order_by("id")
+                .filter(zichtbaar=True)
+                .filter(id__gt=nr)[0]
                 )
     except Fonkel.DoesNotExist:
         next = False
 
     return render(request, "index.html", {
-            "fonkel": current,
+            "current": current,
             "previous": previous,
             "next": next,
             })
 
 def random(request):
-    fonkel = Fonkel.objects.order_by("?").filter(gepubliceerd__isnull=False)[0]
+    try:
+        fonkel = (Fonkel.objects
+              .order_by("?")
+              .filter(zichtbaar=True)[0]
+              )
+    except IndexError:
+        return HttpResponse("Oh oh! De wereldontdooisters hebben nog geen fonkels toegevoegd!")
+
     return redirect(fonkel)
 
 def info(request):
