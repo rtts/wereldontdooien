@@ -24,7 +24,7 @@ def fonkel(request, nr):
                     .filter(zichtbaar=True)
                     .filter(id__lt=nr)[0]
                     )
-    except Fonkel.DoesNotExist:
+    except IndexError:
         previous = False
 
     try:
@@ -33,7 +33,7 @@ def fonkel(request, nr):
                 .filter(zichtbaar=True)
                 .filter(id__gt=nr)[0]
                 )
-    except Fonkel.DoesNotExist:
+    except IndexError:
         next = False
 
     return render(request, "index.html", {
