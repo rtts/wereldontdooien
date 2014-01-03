@@ -41,6 +41,7 @@ class UnpublishedFonkel(Sortable, BaseFonkel):
             afbeelding = self.afbeelding)
         published_fonkel.save()
         self.delete()
+        return published_fonkel;
 
 class PublishedFonkel(BaseFonkel):
     zichtbaar = models.BooleanField(default=True)
