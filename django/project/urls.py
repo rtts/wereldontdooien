@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^([0-9]+)/$', 'wereldontdooien.views.fonkel', name='fonkel'),
     url(r'^verrassing/$', 'wereldontdooien.views.random', name='random'), # ?type=1
     url(r'^info/$', 'wereldontdooien.views.info', name='info'),
+    url(r'^publish/$', 'wereldontdooien.views.publish', name='publish'),
 
     url(r'^beheer/', include(admin.site.urls)),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
