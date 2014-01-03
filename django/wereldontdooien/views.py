@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from wereldontdooien.models import Fonkel
+from wereldontdooien.models import PublishedFonkel as Fonkel
 
 def home(request):
 #todo try catch
