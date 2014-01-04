@@ -21,7 +21,7 @@ class PublishedAdmin(admin.ModelAdmin):
     list_display = ("id", "zichtbaar", publicatiedatum, "gebruiker", "tekst", "type",)
     list_display_links = ("tekst",)
     list_filter = ("type", "gebruiker",)
-    fields = ("type", "tekst", "afbeelding",)
+    fields = ("type", "tekst", "afbeelding","zichtbaar",)
 #    exclude = ("zichtbaar", "gepubliceerd")
     def has_add_permission(self, request, obj=None):
         return False    
