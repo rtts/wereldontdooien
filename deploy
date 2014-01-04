@@ -12,12 +12,6 @@ explain("Checking /srv/wereldontdooien")
 dir_exists('/srv/moniquebroekman')
 done()
 
-explain("Checking database user 'wereldontdooien'...")
-with settings(hide('warnings'), sudo_user='postgres', warn_only=True):
-    sudo('createuser -SRD wereldontdooien')
-    sudo('createdb -O wereldontdooien wereldontdooien')
-done()
-
 upload()
 
 explain("Collecting static files...")
