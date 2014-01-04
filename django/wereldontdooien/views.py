@@ -1,8 +1,8 @@
-from django.http import HttpResponse
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from wereldontdooien.models import PublishedFonkel as Fonkel
 from wereldontdooien.models import UnpublishedFonkel
-from django.contrib.auth.decorators import login_required
 
 def home(request):
     try:
@@ -46,21 +46,23 @@ def fonkel(request, nr):
 
 def random(request):
     try:
-        fonkel = (Fonkel.objects
-              .order_by("?")
-              .filter(zichtbaar=True)[0]
-              )
+        fonkel = Fonkel.objects.order_by("?")filter(zichtbaar=True)[0]
     except IndexError:
-        return HttpResponse("Oh oh! De wereldontdooisters hebben nog geen fonkels toegevoegd!")
-
+        return HttpResponse("Oh oh!
+                De wereldontdooisters hebben nog geen fonkels toegevoegd!")
     return redirect(fonkel)
 
 def info(request):
     render(request, "info.html", {})
 
-@login_required
 def publish(request):
-    if request.method == "POST":
-        fonkel = get_object_or_404(UnpublishedFonkel, id=request.POST["fonkel"])
-        published_fonkel = fonkel.publish()
-        return redirect(published_fonkel)
+    if not request.user.is_authenticated():
+        raise PermissionDenied;
+    if not request.method == "POST":
+        return HttpResponseNotAllowed(["POST"], "<h1>405 Method Not Allowed</h1>");
+    if not request.user.has_perm("wereldontdooien.add_publishedfonkel"):
+        raise PermissionDenied;
+
+    fonkel = get_object_or_404(UnpublishedFonkel, id=request.POST["fonkel"])
+    published_fonkel = fonkel.publish()
+    return redirect(published_fonkel)
