@@ -62,3 +62,6 @@ def publish(request):
     fonkel = get_object_or_404(UnpublishedFonkel, id=request.POST["fonkel"])
     published_fonkel = fonkel.publish()
     return redirect("/beheer/wereldontdooien/publishedfonkel")
+
+def api(request):
+    return HttpResponse(Fonkel.objects.filter(zichtbaar=True).values_list('id', flat=True).order_by('id'))
