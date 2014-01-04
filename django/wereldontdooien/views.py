@@ -4,14 +4,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from wereldontdooien.models import PublishedFonkel as Fonkel
 from wereldontdooien.models import UnpublishedFonkel
 
+EMPTY_DB_ERROR = "Oh oh! De wereldontdooisters hebben nog geen fonkels toegevoegd!"
+
 def home(request):
     try:
-        [current, previous] = (Fonkel.objects
-                               .order_by("-id")
-                               .filter(zichtbaar=True)[:2]
-                               )
+        [current, previous] = Fonkel.objects.filter(zichtbaar=True)[:2]
     except ValueError:
-        return HttpResponse("Oh oh! De wereldontdooisters hebben nog geen fonkels toegevoegd!")
+         return HttpResponse(EMPTY_DB_ERROR)
     return render(request, "index.html", {
             "current": current,
             "previous": previous,
@@ -21,23 +20,13 @@ def home(request):
 def fonkel(request, nr):
     current = get_object_or_404(Fonkel, id=nr)
     try:
-        previous = (Fonkel.objects
-                    .order_by("-id")
-                    .filter(zichtbaar=True)
-                    .filter(id__lt=nr)[0]
-                    )
+        previous = Fonkel.objects.filter(zichtbaar=True).filter(id__lt=nr)[0]
     except IndexError:
         previous = False
-
     try:
-        next = (Fonkel.objects
-                .order_by("id")
-                .filter(zichtbaar=True)
-                .filter(id__gt=nr)[0]
-                )
+        next = Fonkel.objects.order_by("id").filter(zichtbaar=True).filter(id__gt=nr)[0]
     except IndexError:
         next = False
-
     return render(request, "index.html", {
             "current": current,
             "previous": previous,
@@ -45,11 +34,15 @@ def fonkel(request, nr):
             })
 
 def random(request):
+    results = Fonkel.objects.order_by("?").filter(zichtbaar=True)
+
+    if "not" in request.GET:
+        results = results.exclude(id=request.GET["not"])
+        
     try:
-        fonkel = Fonkel.objects.order_by("?")filter(zichtbaar=True)[0]
+        fonkel = results[0]
     except IndexError:
-        return HttpResponse("Oh oh!
-                De wereldontdooisters hebben nog geen fonkels toegevoegd!")
+        return HttpResponse(EMPTY_DB_ERROR)
     return redirect(fonkel)
 
 def info(request):
