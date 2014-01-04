@@ -64,4 +64,4 @@ def publish(request):
     return redirect("/beheer/wereldontdooien/publishedfonkel")
 
 def api(request):
-    return HttpResponse(Fonkel.objects.filter(zichtbaar=True).values_list('id', flat=True).order_by('id'))
+    return HttpResponse(",".join("%i" % x for x in Fonkel.objects.filter(zichtbaar=True).values_list('id', flat=True).order_by('id')))
