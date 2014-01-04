@@ -1,0 +1,12 @@
+{% extends "admin/change_list.html" %}
+
+{% block content %}
+<div style="background: #FDEFFF; padding: 20px; padding-right: 20%">
+<h1>Gepubliceerde Fonkels</h1>
+<p>
+  Dit is de lijst met fonkels die reeds gepubliceerd zijn. Elke fonkel heeft zijn eigen adres op wereldontdooien.nl/‹ID›. Je kunt ze nog wel wijzigen, maar niet meer verwijderen. Als je een nieuwe fonkel wilt publiceren, moet je eerst een <a href="/beheer/wereldontdooien/unpublishedfonkel/add">toekomstige fonkel aanmaken</a>.
+</p>
+</div>
+
+{{ block.super }}
+{% endblock %}
