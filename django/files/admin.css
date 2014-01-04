@@ -23,3 +23,7 @@
     margin-bottom: 10px;
     mmargin-top: 100px;
 }
+
+input[type=text] {
+    width: 80%;
+}
