@@ -38,7 +38,10 @@ def random(request):
 
     if "not" in request.GET:
         results = results.exclude(id=request.GET["not"])
-        
+
+    if "type" in request.GET:
+        results = results.exclude(type=request.GET["type"])
+
     try:
         fonkel = results[0]
     except IndexError:
