@@ -16,7 +16,10 @@
   <body>
     <div class="outer">
       <div class="inner">
-        {% block content %}
+	<div class="header">
+          <img src="{% static 'wereldontdooien.png' %}">
+        </div>
+	{% block content %}
         {% endblock %}
       </div>
     </div>

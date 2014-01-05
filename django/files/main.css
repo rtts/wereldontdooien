@@ -1,21 +1,64 @@
 body, html {
-    margin: 0:
+    margin: 0;
     padding: 0;
+    background: url("/static/behang.jpg");
+    height: 100%;
+}
+
+div.header {
+    padding: 10px;
+    text-align: center;
+}
+
+div.outer {
+    box-shadow: inset 0 0 200px rgba(0,0,0,0.5);
+    min-height: 100%;
 }
 
 div.inner {
     text-align: center;
-    height: 530px;
-    width: 500px;
-    max-height: 100%;
-    max-width: 100%;
-    margin: auto;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
+    padding: 20px;
+}
+
+div.fonkel {
+    position: relative;
+    display: inline-block;
+    border: 2px solid #321e18;
+    background: rgba(255,255,255,0.75);
+    padding: 10px;
+    border-radius: 10px;
 }
 
 div.nav {
-    width: 100px;
-    height: 30px;
-    display: inline-block;
+    position: absolute;
+    top: 45%;
+    opacity: 0.8;
+}
+
+div.nav img {
+    vertical-align: middle;
+    margin: 10px;
+}
+
+div.nav a:link, div.nav a:visited, div.random a:link, div.random a:visited {
+    color: #321e18;
+    text-decoration: none;
+    font-family: sans;
+    font-weight: bold;
+}
+
+div.previous {
+    left: -180px;
+}
+
+div.next {
+    right: -180px;
+}
+
+div.random {
+    margin-top: 10px;
+}
+
+div.fonkel > img {
+    border-radius: 7px;
 }
