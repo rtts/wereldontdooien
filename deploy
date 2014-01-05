@@ -9,7 +9,7 @@ install('python-dev postgresql postgresql-server-dev-all gettext')
 setup_virtualenv('wereldontdooien')
 
 explain("Checking /srv/wereldontdooien")
-dir_exists('/srv/moniquebroekman')
+dir_exists('/srv/wereldontdooien') or abort("/srv/wereldontdooien doesn't exist!")
 done()
 
 upload()
@@ -28,6 +28,14 @@ explain("Syncing database...")
 with cd(abspath('django')):
     vrun('wereldontdooien', './manage.py syncdb')
 done()
+
+# Uncomment the following to enable nightly publishing:
+
+#explain("Installing crontab...")
+#if not file_exists("/etc/cron.d/wereldontdooien"):
+#    sudo("echo 'SHELL=/bin/sh' > /etc/cron.d/wereldontdooien")
+#    sudo("echo '0 3 * * * %s cd %s && django/publish.sh' >> /etc/cron.d/wereldontdooien" % (user, abspath()))
+#done()
 
 serve_dynamically(host, virtualenv='wereldontdooien', static_dir=abspath('django/static'), chdir=abspath('django'), wsgi_file='project/wsgi.py', aliases=aliases)
 
