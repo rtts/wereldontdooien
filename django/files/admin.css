@@ -1,0 +1,29 @@
+#header {
+    background: #C39AC9;
+    color: #fff;
+}
+
+#branding h1 {
+    color: #fff;
+}
+
+#content {
+    margin: 15px 15px;
+}
+
+#content h1 {
+    margin-bottom: 10px;
+}
+
+.module h2, .module caption, .inline-group h2 {
+    background: #C39AC9 url(../img/default-bg.gif) top left repeat-x;
+}
+
+.module {
+    margin-bottom: 10px;
+    mmargin-top: 100px;
+}
+
+input[type=text] {
+    width: 80%;
+}

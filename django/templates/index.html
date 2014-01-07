@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="fonkel">
+  <img width="500" height="500" alt="{{ current.tekst }}" src="{{ current.afbeelding.url }}" />
+
+{% if previous %}
+<div class="previous nav">
+  <a href="{{ previous.get_absolute_url }}"><img src="{% static 'previous.png' %}"/>Vorige</a>
+</div>
+{% endif %}
+
+{% if next %}
+<div class="next nav">
+  <a href="{{ next.get_absolute_url }}">Volgende<img src="{% static 'next.png' %}"/></a>
+</div>
+{% endif %}
+
+</div>
+
+<div class="random">
+  <a href="/verrassing?not={{ current.id }}">Verras me!</a>
+</div>
+
+{% endblock %}

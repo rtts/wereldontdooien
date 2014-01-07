@@ -5,9 +5,13 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'project.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-    url(r'^editor/', include('ckeditor.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^$', 'wereldontdooien.views.home', name='home'),
+    url(r'^([0-9]+)/$', 'wereldontdooien.views.fonkel', name='fonkel'),
+    url(r'^verrassing/$', 'wereldontdooien.views.random', name='random'), # ?type=1
+    url(r'^info/$', 'wereldontdooien.views.info', name='info'),
+    url(r'^publish/$', 'wereldontdooien.views.publish', name='publish'),
+    url(r'^api/$', 'wereldontdooien.views.api', name='api'),
+
+    url(r'^beheer/', include(admin.site.urls)),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

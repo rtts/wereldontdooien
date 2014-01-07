@@ -1,10 +1,15 @@
 {% extends "admin/base.html" %}
 {% load i18n %}
+{% load static %}
 
-{% block title %}{{ title }} | {% trans 'MOI' %}{% endblock %}
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'admin.css' %}" />
+{% endblock %}
+
+{% block title %}Wereldontdooien beheer{% endblock %}
 
 {% block branding %}
-<h1 id="site-name">{% trans 'Master Ontdooi-Interface' %}</h1>
+<h1 id="site-name">Wereldontdooien beheer</h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}

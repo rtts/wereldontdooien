@@ -1,0 +1,15 @@
+#result_list th {
+    width: 50px;
+}
+
+.column-tekst {
+    width: 600px !important;
+}
+
+.column-type {
+    width: 200px !important;
+}
+
+#content > h1 {
+    display: none;
+}

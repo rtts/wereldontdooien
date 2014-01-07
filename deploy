@@ -2,21 +2,14 @@
 from r2src.deploy import *
 
 host = 'wereldontdooien.nl'
-aliases = 'www.wereldontdooien.nl'
+aliases = ['www.wereldontdooien.nl']
 
 bootstrap()
-install('python-dev postgresql postgresql-server-dev-all')
+install('python-dev postgresql postgresql-server-dev-all gettext')
 setup_virtualenv('wereldontdooien')
 
 explain("Checking /srv/wereldontdooien")
-dir_exists('/srv/moniquebroekman')
-done()
-
-explain("Checking database user 'wereldontdooien'...")
-with settings(hide('warnings'), sudo_user='postgres', warn_only=True):
-    sudo('createuser -SRD wereldontdooien')
-    sudo('createdb -O wereldontdooien wereldontdooien')
-    sudo('createdb -O wereldontdooien wereldontdooien')
+dir_exists('/srv/wereldontdooien') or abort("/srv/wereldontdooien doesn't exist!")
 done()
 
 upload()
@@ -26,11 +19,24 @@ with cd(abspath('django')):
     vrun('wereldontdooien', './manage.py collectstatic')
 done()
 
+explain("Generating locales...")
+with cd(abspath('django')):
+    vrun('wereldontdooien', './manage.py compilemessages')
+done()
+
 explain("Syncing database...")
 with cd(abspath('django')):
     vrun('wereldontdooien', './manage.py syncdb')
 done()
 
-serve_dynamically(host, virtualenv='wereldontdooien', static_dir=abspath('django/static'), chdir=abspath('django'), wsgi_file='project/wsgi.py')
+# Uncomment the following to enable nightly publishing:
+
+#explain("Installing crontab...")
+#if not file_exists("/etc/cron.d/wereldontdooien"):
+#    sudo("echo 'SHELL=/bin/sh' > /etc/cron.d/wereldontdooien")
+#    sudo("echo '0 3 * * * %s cd %s && django/publish.sh' >> /etc/cron.d/wereldontdooien" % (user, abspath()))
+#done()
+
+serve_dynamically(host, virtualenv='wereldontdooien', static_dir=abspath('django/static'), chdir=abspath('django'), wsgi_file='project/wsgi.py', aliases=aliases)
 
 done('Deployment complete!')
