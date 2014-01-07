@@ -12,41 +12,50 @@ import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by jolandaverhoef on 30-12-13.
  */
 public class AlarmReceiver extends BroadcastReceiver {
+    public static final String LOG_TAG = "AlarmReceiver";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("AlarmReceiver", "Alarm received");
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setLargeIcon(((BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_notification_snowflake)).getBitmap())
-                .setSmallIcon(R.drawable.ic_notification_snowflake)
-                .setContentTitle(context.getString(R.string.notification_title))
-                .setContentText(context.getString(R.string.notification_text))
-                .setAutoCancel(true);
-        Intent resultIntent = new Intent(context, MainActivity.class);
-        // The stack builder object will contain an artificial back stack for the
-        // started Activity.
-        // This ensures that navigating backward from the Activity leads out of
-        // your application to the Home screen.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        // Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(MainActivity.class);
-        // Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        builder.setContentIntent(resultPendingIntent);
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        // mId allows you to update the notification later on.
-        int notifyID = 1;
-        mNotificationManager.notify(notifyID, builder.build());
+        List<String> currentFonkels = FonkelIO.readFonkelsFromDisk(context);
+        List<String> newFonkels = FonkelIO.readFonkelsFromApi();
+        FonkelIO.writeFonkelsToDisk(context, newFonkels);
+        // Only send notification when there are new fonkels
+        if (newFonkels != null && newFonkels.size() > 0) {
+            // Send notification if there are no current fonkels or the most recent current
+            // fonkel differs from the most recent new fonkel
+            if (currentFonkels == null || currentFonkels.size() == 0 ||
+                    ! newFonkels.get(newFonkels.size()-1).
+                            equals(currentFonkels.get(currentFonkels.size()-1))) {
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                        .setLargeIcon(((BitmapDrawable) context.getResources().getDrawable(
+                                R.drawable.ic_notification_snowflake)).getBitmap())
+                        .setSmallIcon(R.drawable.ic_notification_snowflake)
+                        .setContentTitle(context.getString(R.string.notification_title))
+                        .setContentText(context.getString(R.string.notification_text))
+                        .setAutoCancel(true);
+                Intent resultIntent = new Intent(context, MainActivity.class);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(resultIntent);
+                PendingIntent resultPendingIntent =
+                        stackBuilder.getPendingIntent(
+                                0,
+                                PendingIntent.FLAG_UPDATE_CURRENT
+                        );
+                builder.setContentIntent(resultPendingIntent);
+                NotificationManager mNotificationManager =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                int notifyID = 1;
+                mNotificationManager.notify(notifyID, builder.build());
+            }
+        }
     }
 
     public static void setAlarm(Context context) {
