@@ -95,7 +95,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public float getPageWidth(int position) {
-            return 0.93f;
+            return 1.0f;
         }
 
         @Override
