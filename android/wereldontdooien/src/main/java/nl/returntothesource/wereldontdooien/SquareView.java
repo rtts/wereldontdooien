@@ -17,6 +17,7 @@ public class SquareView extends ImageView {
         super(context, attrs, defStyle);
     }
 
+    @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (widthMeasureSpec > heightMeasureSpec) {
             widthMeasureSpec = heightMeasureSpec;

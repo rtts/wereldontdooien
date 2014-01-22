@@ -97,6 +97,7 @@ public class SettingsActivity extends PreferenceActivity {
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
+        bindPreferenceSummaryToValue(findPreference("surprise_category"));
         bindPreferenceSummaryToValue(findPreference("pref_time"));
     }
 
@@ -195,6 +196,7 @@ public class SettingsActivity extends PreferenceActivity {
             // updated to reflect the new value, per the Android Design
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("pref_time"));
+            bindPreferenceSummaryToValue(findPreference("surprise_category"));
         }
     }
 

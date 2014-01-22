@@ -1,6 +1,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <nl.returntothesource.wereldontdooien.TimePreference
         android:key="pref_time"
-        android:title="@string/pref_time"/>
-
+        android:title="@string/pref_time"
+        android:defaultValue="14:00"/>
+    <ListPreference
+        android:key="surprise_category"
+        android:title="Verrassingscategorie"
+        android:entries="@array/surprise_categories"
+        android:entryValues="@array/surprise_categories"
+        android:defaultValue="--Alle--"/>
 </PreferenceScreen>

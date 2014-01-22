@@ -5,4 +5,17 @@
     <string name="notification_text">Het is tijd voor je dagelijkse portie ontdooien!</string>
     <string name="action_settings">Instellingen</string>
     <string name="pref_time">Tijdstip van notificatie</string>
+    <string name="action_random">Verrassing</string>
+    <string name="action_refresh">Ververs</string>
+    <string name="error_sync">geen verbinding met server</string>
+    <string-array name="surprise_categories">
+        <item>--Alle--</item>
+        <item>Persoonlijke opdracht</item>
+        <item>Opdracht in gezelschap</item>
+        <item>Kadootje</item>
+        <item>Tip</item>
+        <item>Complimentje</item>
+        <item>Spreuk</item>
+        <item>Overig</item>
+    </string-array>
 </resources>

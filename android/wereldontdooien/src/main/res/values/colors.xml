@@ -1,3 +1,5 @@
 <resources>
-
+    <color name="font_color">#321e18</color>
+    <color name="bg_color">#f7f3eb</color>
+    <color name="error">#f54</color>
 </resources>

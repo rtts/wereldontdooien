@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.View;
 import android.widget.ImageView;
 
 public class ImageLoader {
@@ -32,8 +33,8 @@ public class ImageLoader {
         fileCache=new FileCache(context);
         executorService=Executors.newFixedThreadPool(5);
     }
-    
-    final int stub_id=R.drawable.stub;
+
+    //final int stub_id=R.drawable.stub;
     public void DisplayImage(String url, ImageView imageView)
     {
         imageViews.put(imageView, url);
@@ -43,7 +44,8 @@ public class ImageLoader {
         else
         {
             queuePhoto(url, imageView);
-            imageView.setImageResource(stub_id);
+            //imageView.setImageResource(stub_id);
+            imageView.setVisibility(View.INVISIBLE);
         }
     }
         
@@ -176,7 +178,8 @@ public class ImageLoader {
             if(bitmap!=null)
                 setImageBitmap(photoToLoad.imageView, bitmap);
             else
-                photoToLoad.imageView.setImageResource(stub_id);
+                //photoToLoad.imageView.setImageResource(stub_id);
+                photoToLoad.imageView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -186,8 +189,9 @@ public class ImageLoader {
     }
 
     public void setImageBitmap(ImageView imgView, Bitmap bitmap) {
-        bitmap = ImageHelper.getRoundedCornerBitmap(bitmap, 10);
+        bitmap = ImageHelper.getRoundedCornerBitmap(bitmap);
         imgView.setImageBitmap(bitmap);
+        imgView.setVisibility(View.VISIBLE);
     }
 
 }

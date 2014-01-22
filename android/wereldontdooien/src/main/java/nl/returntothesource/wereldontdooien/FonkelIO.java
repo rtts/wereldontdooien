@@ -1,32 +1,27 @@
 package nl.returntothesource.wereldontdooien;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by jolandaverhoef on 04-01-14.
@@ -38,28 +33,32 @@ public class FonkelIO {
     public static final String FILENAME = "fonkels.ser";
     public static final String DIRNAME  = "Fonkels";
 
-    public static List<String> readFonkelsFromApi() {
+    public static List<Fonkel> readFonkelsFromApi() {
+        disableConnectionReuseIfNecessary();
+        HttpURLConnection urlConnection = null;
         try {
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpResponse response = httpclient.execute(new HttpGet(BASE_URL + "api/"));
-            StatusLine statusLine = response.getStatusLine();
-            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                response.getEntity().writeTo(out);
-                out.close();
-                String responseString = out.toString();
-                List<String> fonkels = Arrays.asList(responseString.split(","));
-                Log.d("FonkelIO", "From api: " + fonkels);
-                return fonkels;
-            } else{
-                //Closes the connection.
-                response.getEntity().getContent().close();
-                throw new IOException(statusLine.getReasonPhrase());
-            }
-        } catch (Exception e) {
+            URL urlToRequest = new URL(BASE_URL + "api/");
+            urlConnection = (HttpURLConnection) urlToRequest.openConnection();
+            int statusCode = urlConnection.getResponseCode();
+            if (statusCode != HttpURLConnection.HTTP_OK)
+                throw new IOException("Http Status " + statusCode);
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            Type fonkelType = new TypeToken<List<Fonkel>>() {}.getType();
+            List<Fonkel> fonkels = new Gson().fromJson(reader, fonkelType);
+            Log.d("FonkelIO", "Fonkels from api: " + fonkels);
+            return fonkels;
+        } catch (IOException e) {
+            Log.w("FonkelIO", "Failed to read fonkels from api");
             e.printStackTrace();
+            return null;
+        } catch (JsonSyntaxException e) {
+            Log.w("FonkelIO", "Failed to read fonkels from api");
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (urlConnection != null) urlConnection.disconnect();
         }
-        return null;
     }
 
     public static void saveFonkelFromAPI(Context context, String fonkelName) throws IOException {
@@ -82,24 +81,26 @@ public class FonkelIO {
         }
     }
 
-    public static void writeFonkelsToDisk(Context context, List<String> fonkels) {
+    public static void writeFonkelsToDisk(Context context, List<Fonkel> fonkels) {
         try {
             Log.d("FonkelIO", "Write to disk: " + fonkels);
             FileOutputStream file = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            OutputStream buffer = new BufferedOutputStream(file);
-            ObjectOutput output = new ObjectOutputStream(buffer);
-            output.writeObject(fonkels);
+            file.write(new Gson().toJson(fonkels).getBytes());
+            //ObjectOutput output = new ObjectOutputStream(file);
+            //output.writeObject(fonkels);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public static List<String> readFonkelsFromDisk(Context context) {
+    public static List<Fonkel> readFonkelsFromDisk(Context context) {
         try {
-            InputStream file = context.openFileInput(FILENAME);
-            InputStream buffer = new BufferedInputStream(file);
-            ObjectInput input = new ObjectInputStream(buffer);
+            InputStream in = context.openFileInput(FILENAME);
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            Type fonkelType = new TypeToken<List<Fonkel>>() {}.getType();
+            List<Fonkel> fonkels = new Gson().fromJson(reader, fonkelType);
+            //ObjectInput input = new ObjectInputStream(file);
             //deserialize the List
-            List<String> fonkels = (List<String>)input.readObject();
+            //List<String> fonkels = (List<String>)input.readObject();
             Log.d("FonkelIO", "Read from disk: " + fonkels);
             return fonkels;
         }
@@ -136,5 +137,21 @@ public class FonkelIO {
             Log.e(LOG_TAG, "Directory not created");
         }
         return file;
+    }
+
+    /**
+     * required in order to prevent issues in earlier Android version.
+     */
+    private static void disableConnectionReuseIfNecessary() {
+        // see HttpURLConnection API doc
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
+            System.setProperty("http.keepAlive", "false");
+        }
+    }
+
+    private static String getResponseText(InputStream inStream) {
+        // very nice trick from
+        // http://weblogs.java.net/blog/pat/archive/2004/10/stupid_scanner_1.html
+        return new Scanner(inStream).useDelimiter("\\A").next();
     }
 }

@@ -9,30 +9,26 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 
 public class ImageHelper {
-    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
-
+    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
         final int roundCornerHor = bitmap.getWidth()/10;
         final int roundCornerVer = bitmap.getHeight()/10;
-        final int paddingHor = roundCornerHor;
-        final int paddingVer = roundCornerVer;
         final float borderHor = (int) (roundCornerHor * 0.05);
         final float borderVer = (int) (roundCornerVer * 0.05);
 
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth()+paddingHor, bitmap
-                .getHeight()+paddingVer, Bitmap.Config.ARGB_8888);
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth()+roundCornerHor, bitmap
+                .getHeight()+roundCornerVer, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
 
-        final int color = 0xff424242;
         final Paint paint = new Paint();
-        final Rect dstRect = new Rect(0, 0, bitmap.getWidth()+paddingHor, bitmap.getHeight()+paddingVer);
+        final Rect dstRect = new Rect(0, 0, bitmap.getWidth()+roundCornerHor, bitmap.getHeight()+roundCornerVer);
         final RectF rectF = new RectF(dstRect);
         final Rect innerRect = new Rect((int) borderHor, (int) borderVer,
-                (int) (bitmap.getWidth() + paddingHor - borderHor),
-                (int) (bitmap.getHeight() + paddingVer - borderVer));
+                (int) (bitmap.getWidth() + roundCornerHor - borderHor),
+                (int) (bitmap.getHeight() + roundCornerVer - borderVer));
         final RectF innerRectF = new RectF(innerRect);
-        final Rect bitmapRect = new Rect(paddingHor/2, paddingVer/2,
-                bitmap.getWidth()+(paddingHor/2),
-                bitmap.getHeight()+(paddingVer/2));
+        final Rect bitmapRect = new Rect(roundCornerHor/2, roundCornerVer/2,
+                bitmap.getWidth()+(roundCornerHor/2),
+                bitmap.getHeight()+(roundCornerVer/2));
         final RectF bitmapRectF = new RectF(bitmapRect);
 
         paint.setAntiAlias(true);
