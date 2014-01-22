@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from wereldontdooien.models import PublishedFonkel as Fonkel
 from wereldontdooien.models import UnpublishedFonkel
+import json
 
 EMPTY_DB_ERROR = "Oh oh! De wereldontdooisters hebben nog geen fonkels toegevoegd!"
 
@@ -64,4 +65,5 @@ def publish(request):
     return redirect("/beheer/wereldontdooien/publishedfonkel")
 
 def api(request):
-    return HttpResponse(",".join("%s" % x for x in Fonkel.objects.filter(zichtbaar=True).values_list('afbeelding', flat=True).order_by('id')))
+    my_list = list(Fonkel.objects.filter(zichtbaar=True).order_by('id').values('afbeelding','type'))
+    return HttpResponse(json.dumps(my_list))
