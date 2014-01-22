@@ -9,18 +9,19 @@
     <meta name="HandheldFriendly" content="true" />
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="{% static 'main.css' %}" type="text/css"></link>
-    <link rel="stylesheet" href="{% static 'mobile.css' %}" media="only screen and (max-device-width: 800px)" type="text/css"></link>
-    <link rel="stylesheet" href="{% static 'mobile.css' %}" media="handheld" type="text/css" />
     {% block extrahead %}{% endblock %}
   </head>
   <body>
     <div class="outer">
-      <div class="inner">
-	<div class="header">
-          <img src="{% static 'wereldontdooien.png' %}">
-        </div>
-	{% block content %}
-        {% endblock %}
+      <div class="header">
+        <img src="{% static 'wereldontdooien.png' %}">
+      </div>
+      {% block content %}
+      {% endblock %}
+      <div class="footer">
+        <p>
+          Wereld Ontdooien is een project van <nobr><a href="http://www.wereldontdooisters.nl/">De Wereldontdooisters</a></nobr> i.s.m. <nobr><a href="http://www.returntothesource.nl/">Return to the Source</a></nobr>.
+        </p>
       </div>
     </div>
   </body>

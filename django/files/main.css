@@ -3,30 +3,40 @@ body, html {
     padding: 0;
     background: url("/static/behang.jpg");
     height: 100%;
-}
-
-div.header {
-    padding: 10px;
-    text-align: center;
+    font-family: sans;
 }
 
 div.outer {
-    box-shadow: inset 0 0 200px rgba(0,0,0,0.5);
+    box-shadow: inset 0 0 200px rgba(0,0,0,0.9);
     min-height: 100%;
+    text-align: center;
 }
 
-div.inner {
-    text-align: center;
-    padding: 20px;
+div.header {
+    padding: 20px 0;
+}
+
+div.header > img {
+    max-width: 100%;
 }
 
 div.fonkel {
     position: relative;
     display: inline-block;
+    max-width: calc(98% - 32px);
+    padding: 14px;
     border: 2px solid #321e18;
-    background: rgba(255,255,255,0.75);
-    padding: 10px;
     border-radius: 10px;
+    background: rgba(255,255,255,0.6);
+}
+
+div.fonkel > img {
+    display: block;
+    box-sizing: border-box;
+    max-width: 100%;
+    height: auto;
+    bborder: 10px solid white;
+    border-radius: 7px;
 }
 
 div.nav {
@@ -48,17 +58,50 @@ div.nav a:link, div.nav a:visited, div.random a:link, div.random a:visited {
 }
 
 div.previous {
-    left: -180px;
+    left: -160px;
 }
 
 div.next {
-    right: -180px;
+    right: -160px;
 }
 
 div.random {
-    margin-top: 10px;
+    display: none;
 }
 
-div.fonkel > img {
-    border-radius: 7px;
+div.footer {
+    margin-top: 70px;
+    padding-bottom: 35px;
+    font-family: serif;
+    font-style: italic;
+    font-size: 0.7em;
+}
+
+@media all and (max-width: 800px) {
+    div.outer {
+        padding: 0 2%;
+    }
+    div.header {
+        padding: 2% 0px;
+    }
+    div.fonkel {
+        max-width: calc(96% - 4px);
+        padding: 2%;
+    }
+    div.nav {
+        top: 100%;
+        font-size: .8em;
+    }
+    div.random {
+        font-size: .8em;
+    }
+    div.nav img {
+        width: 12px;
+    }
+    div.previous {
+        left: 0;
+    }
+    div.next {
+        right: 0;
+    }
 }
