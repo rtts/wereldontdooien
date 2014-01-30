@@ -18,8 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -34,11 +38,12 @@ public class MainActivity extends ActionBarActivity {
         ImagePagerAdapter adapter = new ImagePagerAdapter();
         viewPager.setAdapter(adapter);
 
+        /*
         SquareView squareView = (SquareView) findViewById(R.id.dummy_fonkel);
         Bitmap b = BitmapFactory.decodeResource(MainActivity.this.getResources(),
                 R.drawable.dummyfonkel);
         squareView.setImageBitmap(ImageHelper.getRoundedCornerBitmap(b));
-
+        */
         // Download the fonkels
         new DownloadFonkelsTask().execute();
         // Set the alarm for the daily notification, if this is not yet done
@@ -55,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
             if (networkInfo != null && networkInfo.isConnected()) {
                 findViewById(R.id.pager).setVisibility(View.GONE);
                 findViewById(R.id.error_bar).setVisibility(View.GONE);
-                findViewById(R.id.dummy_fonkel).setVisibility(View.VISIBLE);
+                //findViewById(R.id.dummy_fonkel).setVisibility(View.VISIBLE);
                 findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
             } else {
                 this.cancel(false);
@@ -74,7 +79,7 @@ public class MainActivity extends ActionBarActivity {
 
         protected void onPostExecute(List<Fonkel> result) {
             if (result != null && result.size() > 0) {
-                findViewById(R.id.dummy_fonkel).setVisibility(View.GONE);
+                //findViewById(R.id.dummy_fonkel).setVisibility(View.GONE);
                 findViewById(R.id.progress_bar).setVisibility(View.GONE);
                 ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
                 ImagePagerAdapter adapter = (ImagePagerAdapter) viewPager.getAdapter();
@@ -142,9 +147,11 @@ public class MainActivity extends ActionBarActivity {
     private class ImagePagerAdapter extends PagerAdapter {
         ImageLoader imageLoader;
         private List<Fonkel> images;
+        private Map<Integer, List<Fonkel>> fonkelsByCategory;
 
         public ImagePagerAdapter() {
             imageLoader = new ImageLoader(MainActivity.this);
+            fonkelsByCategory = new HashMap<Integer, List<Fonkel>>();
         }
 
         @Override
@@ -165,6 +172,28 @@ public class MainActivity extends ActionBarActivity {
 
         public void setImages(List<Fonkel> images) {
             this.images = images;
+            for (Fonkel f : images) {
+                List<Fonkel> fonkels = fonkelsByCategory.get(f.type);
+                if (fonkels == null) fonkels = new ArrayList<Fonkel>();
+                fonkels.add(f);
+            }
+        }
+
+        public Fonkel getRandom(int type, Fonkel currentFonkel) {
+            List<Fonkel> fonkelsToChoose;
+            if (type == 0) {
+                fonkelsToChoose = images;
+            } else {
+                fonkelsToChoose = fonkelsByCategory.get(type);
+            }
+            int count = images.size();
+            Fonkel randomFonkel = null;
+            if (count > 1) {
+                do {
+                    randomFonkel = images.get(new Random().nextInt(count));
+                } while (randomFonkel == currentFonkel);
+            }
+            return randomFonkel;
         }
 
         public List<Fonkel> getImages() {
