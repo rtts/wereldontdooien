@@ -14,7 +14,7 @@ def home(request):
         try:
             current = Fonkel.objects.all()[0]
             previous = False
-        except: ValueError:
+        except ValueError:
             return render(request, "launchpage.html")
     return render(request, "index.html", {
             "current": current,
