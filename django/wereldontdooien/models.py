@@ -47,6 +47,26 @@ class PublishedFonkel(BaseFonkel):
     def get_absolute_url(self):
         return "/%i/" % self.id
 
+    # This method is only needed once, and will not be part of the GUI
+    def unpublish(self):
+        unpublished_fonkel = UnpublishedFonkel(
+            gebruiker = self.gebruiker,
+            tekst = self.tekst,
+            type = self.type,
+            afbeelding = self.afbeelding)
+        fonkels = UnpublishedFonkel.objects.all()
+        position = fonkels[0].order - 1
+        if position < 0:
+            position = 0
+            # Please never do this in production code.
+            for f in fonkels:
+                f.order += 1
+                f.save()
+        unpublished_fonkel.save()
+        unpublished_fonkel.order = position
+        unpublished_fonkel.save()
+        self.delete()
+
     class Meta:
         verbose_name = "gepubliceerde fonkel"
         ordering = ["-id"]
