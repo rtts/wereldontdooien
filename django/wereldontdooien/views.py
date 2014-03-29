@@ -9,7 +9,7 @@ EMPTY_DB_ERROR = "Oh oh! De wereldontdooisters hebben nog geen fonkels toegevoeg
 
 def home(request):
     try:
-        [current, previous] = Fonkel.objects.filter(zichtbaar=True)[:2]
+        [current, previous] = Fonkel.objects.all()[:2]
     except ValueError:
          return HttpResponse(EMPTY_DB_ERROR)
     return render(request, "index.html", {
@@ -35,7 +35,7 @@ def fonkel(request, nr):
             })
 
 def random(request):
-    results = Fonkel.objects.order_by("?").filter(zichtbaar=True)
+    results = Fonkel.objects.order_by("?")
 
     if "not" in request.GET:
         results = results.exclude(id=request.GET["not"])
@@ -65,5 +65,5 @@ def publish(request):
     return redirect("/beheer/wereldontdooien/publishedfonkel")
 
 def api(request):
-    my_list = list(Fonkel.objects.filter(zichtbaar=True).order_by('id').values('afbeelding','type'))
+    my_list = list(Fonkel.objects.order_by('id').values('afbeelding','type'))
     return HttpResponse(json.dumps(my_list))

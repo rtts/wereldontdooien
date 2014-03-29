@@ -18,10 +18,10 @@ class UnpublishedAdmin(SortableAdmin):
         css = { "all": ("moment_admin.css",)}
 
 class PublishedAdmin(admin.ModelAdmin):
-    list_display = ("id", "zichtbaar", publicatiedatum, "gebruiker", "tekst", "type",)
+    list_display = ("id", publicatiedatum, "gebruiker", "tekst", "type",)
     list_display_links = ("tekst",)
     list_filter = ("type", "gebruiker",)
-    fields = ("type", "tekst", "afbeelding","zichtbaar",)
+    fields = ("type", "tekst", "afbeelding",)
 
     def has_add_permission(self, request, obj=None):
         return False    
