@@ -21,7 +21,7 @@ class BaseFonkel(models.Model):
             ))
     tekst = models.CharField(max_length=1000)
     afbeelding = models.ImageField(upload_to=imgfile)
-    gebruiker = models.ForeignKey(User, blank=True, null=True) # blank = true makes testing easier
+    gebruiker = models.ForeignKey(User)
 
     def __unicode__(self):
         return self.tekst
@@ -44,22 +44,8 @@ class UnpublishedFonkel(Sortable, BaseFonkel):
         return published_fonkel;
 
 class PublishedFonkel(BaseFonkel):
-    zichtbaar = models.BooleanField(default=True)
-
     def get_absolute_url(self):
         return "/%i/" % self.id
-
-    # This method cannot be called from the GUI, it's just here
-    # for testing purposes
-    def unpublish(self):
-        unpublished_fonkel = UnPublishedFonkel(
-            gebruiker = self.gebruiker,
-            tekst = self.tekst,
-            type = self.type,
-            afbeelding = self.afbeelding)
-        unpublished_fonkel.save()
-        self.delete()
-        return unpublished_fonkel;
 
     class Meta:
         verbose_name = "gepubliceerde fonkel"

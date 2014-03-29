@@ -21,11 +21,11 @@ def home(request):
 def fonkel(request, nr):
     current = get_object_or_404(Fonkel, id=nr)
     try:
-        previous = Fonkel.objects.filter(zichtbaar=True).filter(id__lt=nr)[0]
+        previous = Fonkel.objects.filter(id__lt=nr)[0]
     except IndexError:
         previous = False
     try:
-        next = Fonkel.objects.order_by("id").filter(zichtbaar=True).filter(id__gt=nr)[0]
+        next = Fonkel.objects.order_by("id").filter(id__gt=nr)[0]
     except IndexError:
         next = False
     return render(request, "index.html", {

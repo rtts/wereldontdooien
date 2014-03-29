@@ -22,11 +22,8 @@ class PublishedAdmin(admin.ModelAdmin):
     list_display_links = ("tekst",)
     list_filter = ("type", "gebruiker",)
     fields = ("type", "tekst", "afbeelding","zichtbaar",)
-#    exclude = ("zichtbaar", "gepubliceerd")
-    def has_add_permission(self, request, obj=None):
-        return False    
 
-    def has_delete_permission(self, request, obj=None):
+    def has_add_permission(self, request, obj=None):
         return False    
 
     class Media:
