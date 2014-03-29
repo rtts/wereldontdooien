@@ -11,7 +11,11 @@ def home(request):
     try:
         [current, previous] = Fonkel.objects.all()[:2]
     except ValueError:
-         return HttpResponse(EMPTY_DB_ERROR)
+        try:
+            current = Fonkel.objects.all()[0]
+            previous = False
+        except: ValueError:
+            return render(request, "launchpage.html")
     return render(request, "index.html", {
             "current": current,
             "previous": previous,
