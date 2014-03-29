@@ -49,6 +49,18 @@ class PublishedFonkel(BaseFonkel):
     def get_absolute_url(self):
         return "/%i/" % self.id
 
+    # This method cannot be called from the GUI, it's just here
+    # for testing purposes
+    def unpublish(self):
+        unpublished_fonkel = UnPublishedFonkel(
+            gebruiker = self.gebruiker,
+            tekst = self.tekst,
+            type = self.type,
+            afbeelding = self.afbeelding)
+        unpublished_fonkel.save()
+        self.delete()
+        return unpublished_fonkel;
+
     class Meta:
         verbose_name = "gepubliceerde fonkel"
         ordering = ["-id"]
