@@ -29,15 +29,17 @@ public class AlarmReceiver extends BroadcastReceiver {
             @Override
             public void run() {
                 List<Fonkel> currentFonkels = FonkelIO.readFonkelsFromDisk(context);
+                Log.d("AlarmReceiver", "current: " + currentFonkels);
                 List<Fonkel> newFonkels = FonkelIO.readFonkelsFromApi();
+                Log.d("AlarmReceiver", "new: " + newFonkels);
                 // Only send notification when there are new fonkels
                 if (newFonkels != null && newFonkels.size() > 0) {
                     FonkelIO.writeFonkelsToDisk(context, newFonkels);
                     // Send notification if there are no current fonkels or the most recent current
                     // fonkel differs from the most recent new fonkel
                     if (currentFonkels == null || currentFonkels.size() == 0 ||
-                            ! newFonkels.get(newFonkels.size()-1).
-                                    equals(currentFonkels.get(currentFonkels.size()-1))) {
+                            ! newFonkels.get(newFonkels.size()-1).afbeelding.
+                                    equalsIgnoreCase(currentFonkels.get(currentFonkels.size()-1).afbeelding)) {
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                                 .setLargeIcon(((BitmapDrawable) context.getResources().getDrawable(
                                         R.drawable.ic_notification_snowflake)).getBitmap())
@@ -72,7 +74,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         // Set the alarm to start at the time that the user has as preference.
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        String time = pref.getString("pref_time", "14:00");
+        String time = pref.getString("pref_time", null);
+        if (time == null) {
+            time = "14:00";
+            pref.edit().putString("pref_time", time).commit();
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         if (calendar.get(Calendar.HOUR_OF_DAY) > TimePreference.getHour(time))

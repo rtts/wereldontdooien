@@ -7,6 +7,6 @@
         android:key="surprise_category"
         android:title="Verrassingscategorie"
         android:entries="@array/surprise_categories"
-        android:entryValues="@array/surprise_categories"
-        android:defaultValue="--Alle--"/>
+        android:entryValues="@array/surprise_values"
+        android:defaultValue="0"/>
 </PreferenceScreen>

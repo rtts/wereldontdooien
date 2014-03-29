@@ -2,12 +2,14 @@ package nl.returntothesource.wereldontdooien;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -83,6 +85,7 @@ public class MainActivity extends ActionBarActivity {
                 findViewById(R.id.progress_bar).setVisibility(View.GONE);
                 ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
                 ImagePagerAdapter adapter = (ImagePagerAdapter) viewPager.getAdapter();
+
                 adapter.setImages(result);
                 adapter.notifyDataSetChanged();
                 viewPager.setCurrentItem(result.size()-1, false);
@@ -97,13 +100,15 @@ public class MainActivity extends ActionBarActivity {
             super.onCancelled();
             List<Fonkel> fonkels = FonkelIO.readFonkelsFromDisk(MainActivity.this);
             findViewById(R.id.progress_bar).setVisibility(View.GONE);
-            ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-            ImagePagerAdapter adapter = (ImagePagerAdapter) viewPager.getAdapter();
-            adapter.setImages(fonkels);
-            adapter.notifyDataSetChanged();
-            if(fonkels != null && fonkels.size() > 0) {
-                viewPager.setCurrentItem(fonkels.size() - 1, false);
-                viewPager.setVisibility(View.VISIBLE);
+            if (fonkels != null && fonkels.size() > 0) {
+                ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+                ImagePagerAdapter adapter = (ImagePagerAdapter) viewPager.getAdapter();
+                adapter.setImages(fonkels);
+                adapter.notifyDataSetChanged();
+                if (fonkels != null && fonkels.size() > 0) {
+                    viewPager.setCurrentItem(fonkels.size() - 1, false);
+                    viewPager.setVisibility(View.VISIBLE);
+                }
             }
             findViewById(R.id.error_bar).setVisibility(View.VISIBLE);
         }
@@ -126,16 +131,19 @@ public class MainActivity extends ActionBarActivity {
                 return true;
             case R.id.action_random:
                 ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-                int count = viewPager.getAdapter().getCount();
-                int currentItem = viewPager.getCurrentItem();
-                Integer randomNr = currentItem;
-                if (count > 1) {
-                    while (randomNr == currentItem) {
-                        randomNr = new Random().nextInt(count);
+                ImagePagerAdapter adapter = (ImagePagerAdapter) viewPager.getAdapter();
+                if (adapter != null && adapter.getImages() != null) {
+                    Fonkel currentFonkel = adapter.getImages().get(viewPager.getCurrentItem());
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+                    int type = Integer.valueOf(pref.getString("surprise_category", "0"));
+                    int newFonkel = adapter.getRandom(type, currentFonkel);
+                    if (newFonkel != -1) {
+                        viewPager.setCurrentItem(newFonkel, true);
                     }
+                    return true;
+                } else {
+                    return false;
                 }
-                viewPager.setCurrentItem(randomNr, true);
-                return true;
             case R.id.action_refresh:
                 new DownloadFonkelsTask().execute();
                 return true;
@@ -174,26 +182,32 @@ public class MainActivity extends ActionBarActivity {
             this.images = images;
             for (Fonkel f : images) {
                 List<Fonkel> fonkels = fonkelsByCategory.get(f.type);
-                if (fonkels == null) fonkels = new ArrayList<Fonkel>();
+                if (fonkels == null) {
+                    fonkels = new ArrayList<Fonkel>();
+                    fonkelsByCategory.put(f.type, fonkels);
+                }
                 fonkels.add(f);
             }
         }
 
-        public Fonkel getRandom(int type, Fonkel currentFonkel) {
+        public Integer getRandom(int type, Fonkel currentFonkel) {
             List<Fonkel> fonkelsToChoose;
             if (type == 0) {
                 fonkelsToChoose = images;
             } else {
                 fonkelsToChoose = fonkelsByCategory.get(type);
             }
-            int count = images.size();
-            Fonkel randomFonkel = null;
-            if (count > 1) {
-                do {
-                    randomFonkel = images.get(new Random().nextInt(count));
-                } while (randomFonkel == currentFonkel);
+            if (fonkelsToChoose != null && fonkelsToChoose.size() > 0) {
+                int count = fonkelsToChoose.size();
+                Fonkel randomFonkel = fonkelsToChoose.get(0);
+                if (count > 1) {
+                    do {
+                        randomFonkel = fonkelsToChoose.get(new Random().nextInt(count));
+                    } while (randomFonkel == currentFonkel);
+                }
+                return images.indexOf(randomFonkel);
             }
-            return randomFonkel;
+            return images.indexOf(currentFonkel);
         }
 
         public List<Fonkel> getImages() {
