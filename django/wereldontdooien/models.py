@@ -21,7 +21,7 @@ class BaseFonkel(models.Model):
             ))
     tekst = models.CharField(max_length=1000)
     afbeelding = models.ImageField(upload_to=imgfile)
-    gebruiker = models.ForeignKey(User, blank=True, null=True) # blank = true makes testing easier
+    gebruiker = models.ForeignKey(User)
 
     def __unicode__(self):
         return self.tekst
