@@ -11,8 +11,8 @@ class UnpublishedAdmin(SortableAdmin):
     list_filter = ("type", "gebruiker",)
     exclude = ("gebruiker",)
     def save_model(self, request, obj, form, change):
-        if not obj.gebruiker:
-            obj.gebruiker = request.user
+        #if not obj.gebruiker:
+        obj.gebruiker = request.user
         obj.save()
     class Media:
         css = { "all": ("moment_admin.css",)}
