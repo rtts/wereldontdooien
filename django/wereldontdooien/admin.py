@@ -11,7 +11,7 @@ class UnpublishedAdmin(SortableAdmin):
     list_filter = ("type", "gebruiker",)
     exclude = ("gebruiker",)
     def save_model(self, request, obj, form, change):
-        if not obj.gebruiker:
+        if not change:
             obj.gebruiker = request.user
         obj.save()
     class Media:
