@@ -1,4 +1,4 @@
-package nl.returntothesource.wereldontdooien;
+package nl.returntothesource.wereldontdooien.view;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,6 +20,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
+
+import nl.returntothesource.wereldontdooien.io.MemoryCache;
+import nl.returntothesource.wereldontdooien.io.Utils;
+import nl.returntothesource.wereldontdooien.io.FileCache;
 
 public class ImageLoader {
     

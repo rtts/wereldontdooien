@@ -24,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/title"
+        android:contentDescription="@string/cdescr_title"
         android:layout_below="@id/error_bar"/>
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
@@ -35,26 +36,36 @@
         android:paddingTop="32dp"
         android:visibility="gone">
 
-        <nl.returntothesource.wereldontdooien.SquareView
+        <nl.returntothesource.wereldontdooien.view.SquareView
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
     </android.support.v4.view.ViewPager>
-    <!--
-    <nl.returntothesource.wereldontdooien.SquareView
-        android:id="@+id/dummy_fonkel"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_below="@id/title"
-        android:padding="16dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/dummyfonkel"/>
-    -->
+        android:layout_below="@id/title">
+
+        <nl.returntothesource.wereldontdooien.view.SquareView
+            android:id="@+id/wereldontdooisters"
+            android:src="@drawable/wereldontdooisters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:text="@string/none_available"
+            android:onClick="fetchButtonClicked"
+            />
+
+    </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/bg_loading"
+        android:visibility="gone"
         android:id="@+id/progress_bar">
 
         <ProgressBar

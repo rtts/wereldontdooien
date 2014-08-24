@@ -1,4 +1,4 @@
-package nl.returntothesource.wereldontdooien;
+package nl.returntothesource.wereldontdooien.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
