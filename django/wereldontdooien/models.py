@@ -30,6 +30,9 @@ class BaseFonkel(models.Model):
         abstract = True
 
 class UnpublishedFonkel(Sortable, BaseFonkel):
+    def get_absolute_url(self):
+        return "/nadja/%i/" % self.id
+
     class Meta(Sortable.Meta):
         verbose_name = "toekomstige fonkel"
 

@@ -9,19 +9,34 @@ EMPTY_DB_ERROR = "Oh oh! De wereldontdooisters hebben nog geen fonkels toegevoeg
 
 def home(request):
     try:
-        [current, previous] = Fonkel.objects.all()[:2]
-    except ValueError:
-        try:
-            current = Fonkel.objects.all()[0]
-            previous = False
-        except IndexError:
-            return render(request, "launchpage.html")
+        current = Fonkel.objects.all()[0]
+    except IndexError:
+        return render(request, "launchpage.html")
+    return render(request, "splash.html", {
+            "current": current,
+            })
+
+def nadja(request, nr=''):
+    if not nr:
+        return redirect(UnpublishedFonkel.objects.all()[0])
+
+    current = get_object_or_404(UnpublishedFonkel, id=nr)
+    try:
+        previous = UnpublishedFonkel.objects.order_by("-order").filter(order__lt=current.order)[0]
+        print "Before %d comes %d" % (current.id, previous.id);
+    except IndexError:
+        previous = False
+    try:
+        next = UnpublishedFonkel.objects.order_by("order").filter(order__gt=current.order)[0]
+        print "After %d comes %d" % (current.id, next.id);
+    except IndexError:
+        next = False
     return render(request, "index.html", {
             "current": current,
             "previous": previous,
-            "next": False,
+            "next": next,
             })
-
+    
 def fonkel(request, nr):
     current = get_object_or_404(Fonkel, id=nr)
     try:
