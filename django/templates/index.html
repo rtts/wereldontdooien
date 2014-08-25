@@ -1,6 +1,25 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block extrahead %}
+
+<script>
+function checkKey(e) {
+
+    e = e || window.event;
+
+    if (e.keyCode == '37') {
+        window.location = "{{ previous.get_absolute_url }}";
+    }
+    else if (e.keyCode == '39') {
+        window.location = "{{ next.get_absolute_url }}";
+    }
+}
+document.onkeydown = checkKey;
+</script>
+
+{% endblock %}
+
 {% block content %}
 
 <div class="fonkel">
