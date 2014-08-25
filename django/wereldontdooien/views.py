@@ -11,7 +11,7 @@ def home(request):
     try:
         current = Fonkel.objects.all()[0]
     except IndexError:
-        pass
+        current = ""
         # return render(request, "launchpage.html")
     return render(request, "splash.html", {
             "current": current,
