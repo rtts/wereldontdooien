@@ -1,7 +1,8 @@
-package nl.returntothesource.wereldontdooien;
+package nl.returntothesource.wereldontdooien.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,7 +14,8 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
-import java.util.List;
+import nl.returntothesource.wereldontdooien.R;
+import nl.returntothesource.wereldontdooien.receiver.AlarmReceiver;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -26,7 +28,12 @@ import java.util.List;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends PreferenceActivity
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
+    private static final String KEY_SYNC = "pref_bool";
+    private static final String KEY_SYNCTIME = "pref_time";
+    private static final String KEY_SURPRISE = "surprise_category";
+
     /**
      * Determines whether to always show the simplified settings UI, where
      * settings are presented in a single list. When false, settings are shown
@@ -63,7 +70,7 @@ public class SettingsActivity extends PreferenceActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            // TODO: If Settings has multiple levels, Up should navigate up
+            // If Settings has multiple levels, Up should navigate up
             // that hierarchy.
             NavUtils.navigateUpFromSameTask(this);
             return true;
@@ -97,8 +104,8 @@ public class SettingsActivity extends PreferenceActivity {
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
-        bindPreferenceSummaryToValue(findPreference("surprise_category"));
-        bindPreferenceSummaryToValue(findPreference("pref_time"));
+        bindPreferenceSummaryToValue(findPreference(KEY_SURPRISE));
+        bindPreferenceSummaryToValue(findPreference(KEY_SYNCTIME));
     }
 
     /** {@inheritDoc} */
@@ -180,6 +187,27 @@ public class SettingsActivity extends PreferenceActivity {
                         .getString(preference.getKey(), ""));
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(KEY_SYNC) || key.equals(KEY_SYNCTIME)) {
+            AlarmReceiver.setAlarm(this);
+        }
+    }
+
+    @Override
+     protected void onResume() {
+        super.onResume();
+        getPreferenceScreen().getSharedPreferences()
+                .registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getPreferenceScreen().getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
     /**
      * This fragment shows general preferences only. It is used when the
      * activity is showing a two-pane settings UI.
@@ -195,8 +223,8 @@ public class SettingsActivity extends PreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("pref_time"));
-            bindPreferenceSummaryToValue(findPreference("surprise_category"));
+            bindPreferenceSummaryToValue(findPreference(KEY_SYNCTIME));
+            bindPreferenceSummaryToValue(findPreference(KEY_SURPRISE));
         }
     }
 

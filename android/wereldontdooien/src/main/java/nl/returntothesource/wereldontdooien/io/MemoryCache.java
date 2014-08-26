@@ -1,4 +1,4 @@
-package nl.returntothesource.wereldontdooien;
+package nl.returntothesource.wereldontdooien.io;
 
 import java.util.Collections;
 import java.util.Iterator;

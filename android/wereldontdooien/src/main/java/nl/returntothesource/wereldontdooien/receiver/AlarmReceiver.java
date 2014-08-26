@@ -1,4 +1,4 @@
-package nl.returntothesource.wereldontdooien;
+package nl.returntothesource.wereldontdooien.receiver;
 
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -16,6 +16,12 @@ import android.util.Log;
 import java.util.Calendar;
 import java.util.List;
 
+import nl.returntothesource.wereldontdooien.io.Fonkel;
+import nl.returntothesource.wereldontdooien.io.FonkelIO;
+import nl.returntothesource.wereldontdooien.view.MainActivity;
+import nl.returntothesource.wereldontdooien.R;
+import nl.returntothesource.wereldontdooien.view.TimePreference;
+
 /**
  * Created by jolandaverhoef on 30-12-13.
  */
@@ -25,6 +31,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
         Log.d("AlarmReceiver", "Alarm received");
+        // TODO: check for internet connection
         new Thread(new Runnable() {
             @Override
             public void run() {

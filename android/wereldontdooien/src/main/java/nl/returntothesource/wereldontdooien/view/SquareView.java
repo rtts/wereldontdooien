@@ -1,4 +1,4 @@
-package nl.returntothesource.wereldontdooien;
+package nl.returntothesource.wereldontdooien.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -1,4 +1,4 @@
-package nl.returntothesource.wereldontdooien;
+package nl.returntothesource.wereldontdooien.io;
 
 import java.io.InputStream;
 import java.io.OutputStream;

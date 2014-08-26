@@ -1,4 +1,4 @@
-package nl.returntothesource.wereldontdooien;
+package nl.returntothesource.wereldontdooien.view;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -45,6 +45,8 @@ public class ImageHelper {
         paint.setColor(0xffffffff);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
         canvas.drawBitmap(bitmap, new Rect(0,0,bitmap.getWidth(),bitmap.getHeight()), bitmapRect, paint);
+
+        bitmap.recycle();
 
         return output;
     }

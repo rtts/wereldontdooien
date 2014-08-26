@@ -1,2 +1,5 @@
 *.pyc
 *.mo
+android/.idea
+android/build
+android/gradle

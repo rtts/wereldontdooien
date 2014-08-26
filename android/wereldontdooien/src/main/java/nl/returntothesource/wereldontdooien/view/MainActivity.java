@@ -1,15 +1,17 @@
-package nl.returntothesource.wereldontdooien;
+package nl.returntothesource.wereldontdooien.view;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -25,14 +27,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
+
+import nl.returntothesource.wereldontdooien.R;
+import nl.returntothesource.wereldontdooien.io.Fonkel;
+import nl.returntothesource.wereldontdooien.io.FonkelIO;
+import nl.returntothesource.wereldontdooien.receiver.AlarmReceiver;
 
 public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TODO: remove! only for testing.
+//        FonkelIO.deleteFonkelsFromDisk(this);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.progress_bar).setVisibility(View.GONE);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setClipToPadding(false);
@@ -40,19 +49,28 @@ public class MainActivity extends ActionBarActivity {
         ImagePagerAdapter adapter = new ImagePagerAdapter();
         viewPager.setAdapter(adapter);
 
-        /*
-        SquareView squareView = (SquareView) findViewById(R.id.dummy_fonkel);
-        Bitmap b = BitmapFactory.decodeResource(MainActivity.this.getResources(),
-                R.drawable.dummyfonkel);
-        squareView.setImageBitmap(ImageHelper.getRoundedCornerBitmap(b));
-        */
-        // Download the fonkels
-        new DownloadFonkelsTask().execute();
         // Set the alarm for the daily notification, if this is not yet done
         AlarmReceiver.setAlarm(MainActivity.this);
+        new DownloadFonkelsTask().execute();
+    }
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        unbindDrawables(findViewById(R.id.rootview));
+        System.gc();
     }
 
-    private class DownloadFonkelsTask extends AsyncTask<Void, Void, List<Fonkel>> {
+    private void unbindDrawables(View view) {
+        if (view.getBackground() != null) {
+            view.getBackground().setCallback(null);
+        }
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                unbindDrawables(((ViewGroup) view).getChildAt(i));
+            } ((ViewGroup) view).removeAllViews();
+        }
+    }
+
+    public class DownloadFonkelsTask extends AsyncTask<Void, Void, List<Fonkel>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -62,7 +80,6 @@ public class MainActivity extends ActionBarActivity {
             if (networkInfo != null && networkInfo.isConnected()) {
                 findViewById(R.id.pager).setVisibility(View.GONE);
                 findViewById(R.id.error_bar).setVisibility(View.GONE);
-                //findViewById(R.id.dummy_fonkel).setVisibility(View.VISIBLE);
                 findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
             } else {
                 this.cancel(false);
@@ -81,7 +98,6 @@ public class MainActivity extends ActionBarActivity {
 
         protected void onPostExecute(List<Fonkel> result) {
             if (result != null && result.size() > 0) {
-                //findViewById(R.id.dummy_fonkel).setVisibility(View.GONE);
                 findViewById(R.id.progress_bar).setVisibility(View.GONE);
                 ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
                 ImagePagerAdapter adapter = (ImagePagerAdapter) viewPager.getAdapter();
@@ -98,19 +114,24 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onCancelled() {
             super.onCancelled();
-            List<Fonkel> fonkels = FonkelIO.readFonkelsFromDisk(MainActivity.this);
+            showFromDisk();
             findViewById(R.id.progress_bar).setVisibility(View.GONE);
-            if (fonkels != null && fonkels.size() > 0) {
-                ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-                ImagePagerAdapter adapter = (ImagePagerAdapter) viewPager.getAdapter();
-                adapter.setImages(fonkels);
-                adapter.notifyDataSetChanged();
-                if (fonkels != null && fonkels.size() > 0) {
-                    viewPager.setCurrentItem(fonkels.size() - 1, false);
-                    viewPager.setVisibility(View.VISIBLE);
-                }
-            }
             findViewById(R.id.error_bar).setVisibility(View.VISIBLE);
+        }
+    }
+
+    private boolean showFromDisk() {
+        List<Fonkel> fonkels = FonkelIO.readFonkelsFromDisk(MainActivity.this);
+        if (fonkels != null && fonkels.size() > 0) {
+            ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+            ImagePagerAdapter adapter = (ImagePagerAdapter) viewPager.getAdapter();
+            adapter.setImages(fonkels);
+            adapter.notifyDataSetChanged();
+            viewPager.setCurrentItem(fonkels.size() - 1, false);
+            viewPager.setVisibility(View.VISIBLE);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -132,7 +153,7 @@ public class MainActivity extends ActionBarActivity {
             case R.id.action_random:
                 ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
                 ImagePagerAdapter adapter = (ImagePagerAdapter) viewPager.getAdapter();
-                if (adapter != null && adapter.getImages() != null) {
+                if (adapter != null && adapter.getImages() != null && adapter.getImages().size() > 0) {
                     Fonkel currentFonkel = adapter.getImages().get(viewPager.getCurrentItem());
                     SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
                     int type = Integer.valueOf(pref.getString("surprise_category", "0"));
@@ -142,6 +163,7 @@ public class MainActivity extends ActionBarActivity {
                     }
                     return true;
                 } else {
+                    showNoFonkelsDialog();
                     return false;
                 }
             case R.id.action_refresh:
@@ -206,6 +228,8 @@ public class MainActivity extends ActionBarActivity {
                     } while (randomFonkel == currentFonkel);
                 }
                 return images.indexOf(randomFonkel);
+            } else {
+                showNoFonkelsInCategoryDialog();
             }
             return images.indexOf(currentFonkel);
         }
@@ -220,6 +244,8 @@ public class MainActivity extends ActionBarActivity {
             SquareView imageView = new SquareView(context);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageLoader.DisplayImage(FonkelIO.BASE_URL + "media/" + images.get(position).afbeelding, imageView);
+//            imageLoader.DisplayImage("http://www.returntothesource.nl/" + images.get(position).afbeelding, imageView);
+
             container.addView(imageView, 0);
             return imageView;
         }
@@ -227,6 +253,55 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((SquareView) object);
+        }
+    }
+
+    private void showNoFonkelsDialog() {
+        DialogFragment newFragment = new NoFonkelsDialogFragment();
+        newFragment.show(getSupportFragmentManager(), "nofonkels");
+    }
+    private void showNoFonkelsInCategoryDialog() {
+        DialogFragment newFragment = new NoFonkelsInCategoryDialogFragment();
+        newFragment.show(getSupportFragmentManager(), "nofonkelsincategory");
+    }
+
+    public class NoFonkelsDialogFragment extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.dialog_no_fonkels)
+                    .setPositiveButton(R.string.nu_ophalen, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            new DownloadFonkelsTask().execute();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null);
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+
+    public class NoFonkelsInCategoryDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.dialog_no_fonkels_in_category)
+                    .setPositiveButton(R.string.naar_instellingen, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+                            NoFonkelsInCategoryDialogFragment.this.startActivity(i);
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
         }
     }
 }
