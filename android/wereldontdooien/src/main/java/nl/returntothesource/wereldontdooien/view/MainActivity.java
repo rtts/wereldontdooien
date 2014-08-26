@@ -78,8 +78,9 @@ public class MainActivity extends ActionBarActivity {
                     getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.isConnected()) {
-                findViewById(R.id.pager).setVisibility(View.GONE);
-                findViewById(R.id.error_bar).setVisibility(View.GONE);
+                findViewById(R.id.pager).setVisibility(View.INVISIBLE);
+                findViewById(R.id.error_bar).setVisibility(View.INVISIBLE);
+                findViewById(R.id.error_message).setVisibility(View.GONE);
                 findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
             } else {
                 this.cancel(false);
@@ -114,7 +115,11 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onCancelled() {
             super.onCancelled();
-            showFromDisk();
+            if(showFromDisk()) {
+                findViewById(R.id.error_message).setVisibility(View.GONE);
+            } else {
+                findViewById(R.id.error_message).setVisibility(View.VISIBLE);
+            }
             findViewById(R.id.progress_bar).setVisibility(View.GONE);
             findViewById(R.id.error_bar).setVisibility(View.VISIBLE);
         }
