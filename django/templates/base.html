@@ -5,27 +5,39 @@
     <title>
       {% block title %}Wereld Ontdooien - Elke dag een nieuwe fonkel!{% endblock %}
     </title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
-    <meta name="HandheldFriendly" content="true" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="{% static 'main.css' %}" type="text/css"></link>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width"/>
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link rel="apple-touch-icon" href="/static/icon.png"/>
+
+    <link rel="stylesheet" href="{% static 'main.css' %}" type="text/css"/>
     {% block extrahead %}{% endblock %}
   </head>
   <body>
     <div class="outer">
       <div class="header">
-        <img src="{% static 'wereldontdooien.png' %}">
+        <img src="{% static 'wereldontdooien.png' %}"/>
       </div>
       {% block content %}
       {% endblock %}
       <div class="footer">
         <p>
-          Wereld Ontdooien is een project van<br>
-          <a style="color:#DA4392" href="http://www.wereldontdooisters.nl/">De Wereldontdooisters</a><br>
-          in samenwerking met<br>
+          Wereld Ontdooien is een project van<br/>
+          <a style="color:#DA4392" href="http://www.wereldontdooisters.nl/">De Wereldontdooisters</a><br/>
+          in samenwerking met<br/>
           <a style="color:#009F1E" href="http://www.returntothesource.nl/">Return to the Source</a>.
         </p>
       </div>
     </div>
+    <script>
+    var gotoLink = function(event) {
+      event.preventDefault();
+      location.href = $( event.target ).attr( "href" );
+    };
+    document.addEventListener("click", gotoLink);
+    document.addEventListener("a", gotoLink);
+    </script>
   </body>
 </html>
