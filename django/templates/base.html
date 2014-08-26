@@ -34,7 +34,7 @@
     <script>
     var gotoLink = function(event) {
       event.preventDefault();
-      location.href = $( event.target ).attr( "href" );
+      location.href = document.getElementById(event.target).getAttribute("href");
     };
     document.addEventListener("click", gotoLink);
     document.addEventListener("a", gotoLink);
