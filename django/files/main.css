@@ -93,8 +93,7 @@ div.footer a {
         padding: 2% 0px;
     }
     div.fonkel {
-        max-width: calc(96% - 4px);
-        padding: 2%;
+        padding: 3%;
     }
     div.nav {
         top: 100%;
