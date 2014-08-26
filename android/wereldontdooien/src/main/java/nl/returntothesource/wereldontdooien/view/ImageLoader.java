@@ -1,5 +1,12 @@
 package nl.returntothesource.wereldontdooien.view;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.view.View;
+import android.widget.ImageView;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,16 +21,10 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import android.os.Handler;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.view.View;
-import android.widget.ImageView;
 
+import nl.returntothesource.wereldontdooien.io.FileCache;
 import nl.returntothesource.wereldontdooien.io.MemoryCache;
 import nl.returntothesource.wereldontdooien.io.Utils;
-import nl.returntothesource.wereldontdooien.io.FileCache;
 
 public class ImageLoader {
     
@@ -66,7 +67,7 @@ public class ImageLoader {
         //from SD cache
         Bitmap b = decodeFile(f);
         if(b!=null)
-            return b;
+            return ImageHelper.getRoundedCornerBitmap(b);
         
         //from web
         try {
@@ -82,7 +83,7 @@ public class ImageLoader {
             os.close();
             conn.disconnect();
             bitmap = decodeFile(f);
-            return bitmap;
+            return ImageHelper.getRoundedCornerBitmap(bitmap);
         } catch (Throwable ex){
            ex.printStackTrace();
            if(ex instanceof OutOfMemoryError)
@@ -102,7 +103,7 @@ public class ImageLoader {
             stream1.close();
             
             //Find the correct scale value. It should be the power of 2.
-            final int REQUIRED_SIZE=500;
+            final int REQUIRED_SIZE=400;
             int width_tmp=o.outWidth, height_tmp=o.outHeight;
             int scale=1;
             while(true){
@@ -119,11 +120,13 @@ public class ImageLoader {
             FileInputStream stream2=new FileInputStream(f);
             Bitmap bitmap=BitmapFactory.decodeStream(stream2, null, o2);
             stream2.close();
+
             return bitmap;
         } catch (FileNotFoundException e) {
+//            e.printStackTrace();
         } 
         catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return null;
     }
@@ -157,7 +160,7 @@ public class ImageLoader {
                 BitmapDisplayer bd=new BitmapDisplayer(bmp, photoToLoad);
                 handler.post(bd);
             }catch(Throwable th){
-                th.printStackTrace();
+//                th.printStackTrace();
             }
         }
     }
@@ -193,7 +196,7 @@ public class ImageLoader {
     }
 
     public void setImageBitmap(ImageView imgView, Bitmap bitmap) {
-        bitmap = ImageHelper.getRoundedCornerBitmap(bitmap);
+//        bitmap = ImageHelper.getRoundedCornerBitmap(bitmap);
         imgView.setImageBitmap(bitmap);
         imgView.setVisibility(View.VISIBLE);
     }

@@ -1,18 +1,11 @@
 package nl.returntothesource.wereldontdooien.view;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SyncStatusObserver;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -22,7 +15,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,8 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import nl.returntothesource.wereldontdooien.io.Fonkel;
 import nl.returntothesource.wereldontdooien.R;
+import nl.returntothesource.wereldontdooien.io.Fonkel;
 import nl.returntothesource.wereldontdooien.io.FonkelIO;
 import nl.returntothesource.wereldontdooien.receiver.AlarmReceiver;
 
@@ -47,14 +39,9 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //TODO: remove! only for testing.
-        FonkelIO.deleteFonkelsFromDisk(this);
+//        FonkelIO.deleteFonkelsFromDisk(this);
         setContentView(R.layout.activity_main);
         findViewById(R.id.progress_bar).setVisibility(View.GONE);
-
-        SquareView squareView = (SquareView) findViewById(R.id.wereldontdooisters);
-        Bitmap b = BitmapFactory.decodeResource(MainActivity.this.getResources(),
-                R.drawable.wereldontdooisters);
-        squareView.setImageBitmap(ImageHelper.getRoundedCornerBitmap(b));
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setClipToPadding(false);
@@ -62,15 +49,25 @@ public class MainActivity extends ActionBarActivity {
         ImagePagerAdapter adapter = new ImagePagerAdapter();
         viewPager.setAdapter(adapter);
 
-        if (showFromDisk()) {
-            findViewById(R.id.wereldontdooisters).setVisibility(View.GONE);
-        }
         // Set the alarm for the daily notification, if this is not yet done
         AlarmReceiver.setAlarm(MainActivity.this);
+        new DownloadFonkelsTask().execute();
+    }
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        unbindDrawables(findViewById(R.id.rootview));
+        System.gc();
     }
 
-    public void fetchButtonClicked(View v) {
-        new DownloadFonkelsTask().execute();
+    private void unbindDrawables(View view) {
+        if (view.getBackground() != null) {
+            view.getBackground().setCallback(null);
+        }
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                unbindDrawables(((ViewGroup) view).getChildAt(i));
+            } ((ViewGroup) view).removeAllViews();
+        }
     }
 
     public class DownloadFonkelsTask extends AsyncTask<Void, Void, List<Fonkel>> {
@@ -109,7 +106,6 @@ public class MainActivity extends ActionBarActivity {
                 adapter.notifyDataSetChanged();
                 viewPager.setCurrentItem(result.size()-1, false);
                 viewPager.setVisibility(View.VISIBLE);
-                findViewById(R.id.wereldontdooisters).setVisibility(View.GONE);
             } else {
                 this.cancel(false);
             }
@@ -247,9 +243,8 @@ public class MainActivity extends ActionBarActivity {
             Context context = MainActivity.this;
             SquareView imageView = new SquareView(context);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            // TODO: Terugzetten! Alleen om mee te testen
-            //imageLoader.DisplayImage(FonkelIO.BASE_URL + "media/" + images.get(position).afbeelding, imageView);
-            imageLoader.DisplayImage("http://www.returntothesource.nl/" + images.get(position).afbeelding, imageView);
+            imageLoader.DisplayImage(FonkelIO.BASE_URL + "media/" + images.get(position).afbeelding, imageView);
+//            imageLoader.DisplayImage("http://www.returntothesource.nl/" + images.get(position).afbeelding, imageView);
 
             container.addView(imageView, 0);
             return imageView;

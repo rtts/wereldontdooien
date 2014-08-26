@@ -4,7 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rootview"
     android:orientation="vertical">
 
     <TextView
@@ -12,39 +11,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:background="@color/error"
         android:textStyle="italic"
         android:textColor="#fff"
         android:textSize="12sp"
         android:text="@string/error_sync"
         android:paddingBottom="2dp"
-        android:background="@color/error"
-        android:layout_alignParentTop="true"
+        android:alpha="0.4"
         android:visibility="gone"/>
-
     <ImageView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/title"
         android:contentDescription="@string/cdescr_title"
-        android:layout_alignParentTop="true"/>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+        android:layout_below="@id/error_bar"/>
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title"
-        android:gravity="center"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:visibility="gone">
+        android:layout_below="@id/title">
 
         <nl.returntothesource.wereldontdooien.view.SquareView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:id="@+id/wereldontdooisters"
+            android:src="@drawable/splash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onClick="next"/>
 
-    </android.support.v4.view.ViewPager>
-
+    </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -57,22 +52,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
 
-        </FrameLayout>
-    <TextView
-        android:id="@+id/email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:text="@string/email"
-        android:autoLink="email"
-        android:paddingBottom="16dp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/email"
-        android:text="Mail je foto's en verhalen naar"
-        android:gravity="center"
-        android:textAlignment="center"/>
+    </FrameLayout>
+
 </RelativeLayout>

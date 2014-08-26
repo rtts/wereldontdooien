@@ -46,6 +46,8 @@ public class ImageHelper {
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
         canvas.drawBitmap(bitmap, new Rect(0,0,bitmap.getWidth(),bitmap.getHeight()), bitmapRect, paint);
 
+        bitmap.recycle();
+
         return output;
     }
 }

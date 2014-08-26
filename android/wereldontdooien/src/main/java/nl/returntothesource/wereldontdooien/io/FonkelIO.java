@@ -1,8 +1,6 @@
 package nl.returntothesource.wereldontdooien.io;
 
 import android.content.Context;
-import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -11,18 +9,14 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Created by jolandaverhoef on 04-01-14.
@@ -35,8 +29,7 @@ public class FonkelIO {
     public static final String DIRNAME  = "Fonkels";
 
     public static List<Fonkel> readFonkelsFromApi() {
-        /*
-        disableConnectionReuseIfNecessary();
+        //disableConnectionReuseIfNecessary();
         HttpURLConnection urlConnection = null;
         try {
             URL urlToRequest = new URL(BASE_URL + "api/");
@@ -60,13 +53,13 @@ public class FonkelIO {
             return null;
         } finally {
             if (urlConnection != null) urlConnection.disconnect();
-        }*/
-        Fonkel f = new Fonkel();
-        f.afbeelding = "logo_large.png";
-        f.type = 2;
-        List<Fonkel> result = new ArrayList<Fonkel>();
-        result.add(f);
-        return result;
+        }
+//        Fonkel f = new Fonkel();
+//        f.afbeelding = "logo_large.png";
+//        f.type = 2;
+//        List<Fonkel> result = new ArrayList<Fonkel>();
+//        result.add(f);
+//        return result;
     }
 
     public static void writeFonkelsToDisk(Context context, List<Fonkel> fonkels) {

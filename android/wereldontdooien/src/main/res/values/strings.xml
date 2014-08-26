@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Wereld Ontdooien</string>
     <string name="notification_title">Nieuwe fonkel</string>
     <string name="notification_text">Het is tijd voor je dagelijkse portie ontdooien!</string>
@@ -18,6 +19,7 @@
     <string name="naar_instellingen">Naar instellingen</string>
     <string name="cancel">Terug</string>
     <string name="cdescr_title">Help mee de Wereld Ontdooien vanuit je eigen huiskamer!</string>
+
     <string-array name="surprise_categories">
         <item>--Alle--</item>
         <item>Spreuk</item>
@@ -38,4 +40,8 @@
         <item>6</item>
         <item>7</item>
     </string-array>
+
+    <string name="title_activity_splash">Wereld Ontdooien</string>
+    <string name="email">wereldontdooisters@gmail.com</string>
+
 </resources>
