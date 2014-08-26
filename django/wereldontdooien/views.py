@@ -85,5 +85,5 @@ def publish(request):
     return redirect("/beheer/wereldontdooien/publishedfonkel")
 
 def api(request):
-    my_list = list(Fonkel.objects.order_by('id').values('afbeelding','type'))
+    my_list = list(UnpublishedFonkel.objects.order_by('id').values('afbeelding','type'))
     return HttpResponse(json.dumps(my_list))
