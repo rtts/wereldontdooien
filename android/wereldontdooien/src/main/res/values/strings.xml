@@ -28,6 +28,10 @@
         <item>Opdracht in gezelschap</item>
         <item>Kadootje</item>
         <item>Complimentje</item>
+        <item>Doe-dingen</item>
+        <item>Recept</item>
+        <item>Foto-opdracht</item>
+        <item>Gedicht</item>
         <item>Overig</item>
     </string-array>
     <string-array name="surprise_values">
@@ -39,9 +43,14 @@
         <item>5</item>
         <item>6</item>
         <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>99</item>
     </string-array>
 
     <string name="title_activity_splash">Wereld Ontdooien</string>
     <string name="email">wereldontdooisters@gmail.com</string>
+    <string name="email_help">Mail je foto\'s en verhalen naar</string>
 
 </resources>

@@ -2,5 +2,6 @@
     <color name="font_color">#321e18</color>
     <color name="bg_color">#f7f3eb</color>
     <color name="error">#66ff5544</color>
+    <color name="error2">#ff5544</color>
     <color name="bg_loading">#77000000</color>
 </resources>

@@ -15,6 +15,10 @@ public class Fonkel {
             case 4: return "Opdracht in gezelschap";
             case 5: return "Kadootje";
             case 6: return "Complimentje";
+            case 7: return "Doe-dingen";
+            case 8: return "Recept";
+            case 9: return "Foto-opdracht";
+            case 10: return "Gedicht";
             default: return "Overig";
         }
     }
