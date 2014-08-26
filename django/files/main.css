@@ -25,14 +25,14 @@ div.fonkel {
     position: relative;
     display: inline-block;
     max-width: calc(98% - 32px);
-    padding: 14px;
+    padding: 20px;
     border: 2px solid #321e18;
-    border-radius: 10px;
+    border-radius: 20px;
 }
 
 div.fonkel > img {
     display: block;
-    border-radius: 7px;
+    border-radius: 10px;
 }
 
 @media (max-width: 600px) {
@@ -93,8 +93,7 @@ div.footer a {
         padding: 2% 0px;
     }
     div.fonkel {
-        max-width: calc(96% - 4px);
-        padding: 2%;
+        padding: 3%;
     }
     div.nav {
         top: 100%;
