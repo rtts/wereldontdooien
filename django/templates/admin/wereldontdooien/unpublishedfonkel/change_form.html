@@ -5,13 +5,15 @@
 {% if original %}
 <h1>Fonkel wijzigen</h1>
 <p>
-  Hieronder kun je deze fonkel wijzigen. Ook is het mogelijk om de fonkel te publiceren, wat betekent dat deze verdwijnt uit de lijst met toekomstige fonkels en op de site verschijnt.
+  Hieronder kun je deze fonkel wijzigen.
 <p>
+{% comment %}
 <form action="/publish/" method="POST">
   <input type="submit" value="Publiceer deze fonkel"/>
   <input type="hidden" name="fonkel" value="{{ original.id }}"/>
   {% csrf_token %}
 </form>
+{% endcomment %}
 </p>
 {% else %}
 <h1>Maak een nieuwe fonkel</h1>

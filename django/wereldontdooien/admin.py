@@ -11,22 +11,19 @@ class UnpublishedAdmin(SortableAdmin):
     list_filter = ("type", "gebruiker",)
     exclude = ("gebruiker",)
     def save_model(self, request, obj, form, change):
-        if not obj.gebruiker:
+        if not change:
             obj.gebruiker = request.user
         obj.save()
     class Media:
         css = { "all": ("moment_admin.css",)}
 
 class PublishedAdmin(admin.ModelAdmin):
-    list_display = ("id", "zichtbaar", publicatiedatum, "gebruiker", "tekst", "type",)
+    list_display = ("id", publicatiedatum, "gebruiker", "tekst", "type",)
     list_display_links = ("tekst",)
     list_filter = ("type", "gebruiker",)
-    fields = ("type", "tekst", "afbeelding","zichtbaar",)
-#    exclude = ("zichtbaar", "gepubliceerd")
-    def has_add_permission(self, request, obj=None):
-        return False    
+    fields = ("type", "tekst", "afbeelding",)
 
-    def has_delete_permission(self, request, obj=None):
+    def has_add_permission(self, request, obj=None):
         return False    
 
     class Media:

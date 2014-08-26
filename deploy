@@ -31,11 +31,11 @@ done()
 
 # Uncomment the following to enable nightly publishing:
 
-#explain("Installing crontab...")
-#if not file_exists("/etc/cron.d/wereldontdooien"):
-#    sudo("echo 'SHELL=/bin/sh' > /etc/cron.d/wereldontdooien")
-#    sudo("echo '0 3 * * * %s cd %s && django/publish.sh' >> /etc/cron.d/wereldontdooien" % (user, abspath()))
-#done()
+explain("Installing crontab...")
+if not file_exists("/etc/cron.d/wereldontdooien"):
+    sudo("echo 'SHELL=/bin/sh' > /etc/cron.d/wereldontdooien")
+    sudo("echo '0 3 * * * %s cd %s && ./publish.sh' >> /etc/cron.d/wereldontdooien" % (user, abspath('django')))
+done()
 
 serve_dynamically(host, virtualenv='wereldontdooien', static_dir=abspath('django/static'), chdir=abspath('django'), wsgi_file='project/wsgi.py', aliases=aliases)
 

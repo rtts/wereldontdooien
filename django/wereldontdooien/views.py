@@ -9,23 +9,43 @@ EMPTY_DB_ERROR = "Oh oh! De wereldontdooisters hebben nog geen fonkels toegevoeg
 
 def home(request):
     try:
-        [current, previous] = Fonkel.objects.filter(zichtbaar=True)[:2]
-    except ValueError:
-         return HttpResponse(EMPTY_DB_ERROR)
-    return render(request, "index.html", {
+        current = Fonkel.objects.all()[0]
+    except IndexError:
+        current = ""
+        # return render(request, "launchpage.html")
+    return render(request, "splash.html", {
             "current": current,
-            "previous": previous,
-            "next": False,
             })
 
-def fonkel(request, nr):
-    current = get_object_or_404(Fonkel, id=nr)
+def nadja(request, nr=''):
+    if not nr:
+        return redirect(UnpublishedFonkel.objects.all()[0])
+
+    current = get_object_or_404(UnpublishedFonkel, id=nr)
     try:
-        previous = Fonkel.objects.filter(zichtbaar=True).filter(id__lt=nr)[0]
+        previous = UnpublishedFonkel.objects.order_by("-order").filter(order__lt=current.order)[0]
+        print "Before %d comes %d" % (current.id, previous.id);
     except IndexError:
         previous = False
     try:
-        next = Fonkel.objects.order_by("id").filter(zichtbaar=True).filter(id__gt=nr)[0]
+        next = UnpublishedFonkel.objects.order_by("order").filter(order__gt=current.order)[0]
+        print "After %d comes %d" % (current.id, next.id);
+    except IndexError:
+        next = False
+    return render(request, "index.html", {
+            "current": current,
+            "previous": previous,
+            "next": next,
+            })
+    
+def fonkel(request, nr):
+    current = get_object_or_404(Fonkel, id=nr)
+    try:
+        previous = Fonkel.objects.filter(id__lt=nr)[0]
+    except IndexError:
+        previous = False
+    try:
+        next = Fonkel.objects.order_by("id").filter(id__gt=nr)[0]
     except IndexError:
         next = False
     return render(request, "index.html", {
@@ -35,7 +55,7 @@ def fonkel(request, nr):
             })
 
 def random(request):
-    results = Fonkel.objects.order_by("?").filter(zichtbaar=True)
+    results = Fonkel.objects.order_by("?")
 
     if "not" in request.GET:
         results = results.exclude(id=request.GET["not"])
@@ -65,5 +85,5 @@ def publish(request):
     return redirect("/beheer/wereldontdooien/publishedfonkel")
 
 def api(request):
-    my_list = list(Fonkel.objects.filter(zichtbaar=True).order_by('id').values('afbeelding','type'))
+    my_list = list(UnpublishedFonkel.objects.order_by('id').values('afbeelding','type'))
     return HttpResponse(json.dumps(my_list))
