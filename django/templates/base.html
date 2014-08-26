@@ -37,8 +37,10 @@
       event.preventDefault();
       location.href = event.target.href;
     };
-    document.addEventListener("click", gotoLink);
-    document.addEventListener("a", gotoLink);
+    var anchors = document.getElementsByTagName("a");
+    for (var i=0; i<anchors.size(); i++) {
+      anchors[i].addEventListener("click", gotoLink);
+    }
     </script>
   </body>
 </html>
