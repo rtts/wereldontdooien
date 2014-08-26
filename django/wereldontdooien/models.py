@@ -17,7 +17,8 @@ class BaseFonkel(models.Model):
             (4, "Opdracht in gezelschap"),
             (5, "Kadootje"),
             (6, "Complimentje"),
-            (7, "Overig"),
+            (7, "Doe-dingen"),
+            (99, "Overig"),
             ))
     tekst = models.CharField(max_length=1000)
     afbeelding = models.ImageField(upload_to=imgfile)
