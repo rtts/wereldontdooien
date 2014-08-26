@@ -73,8 +73,8 @@ div.random {
 }
 
 div.footer {
-    margin-top: 70px;
-    padding-bottom: 35px;
+    margin-top: 2em;
+    padding-bottom: 1em;
     font-family: serif;
     font-style: italic;
     opacity: 0.5;
