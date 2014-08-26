@@ -18,6 +18,7 @@ class BaseFonkel(models.Model):
             (5, "Kadootje"),
             (6, "Complimentje"),
             (7, "Doe-dingen"),
+            (8, "Recept"),
             (99, "Overig"),
             ))
     tekst = models.CharField(max_length=1000)
