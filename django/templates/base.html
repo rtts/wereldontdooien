@@ -50,7 +50,7 @@
       $('.fonkel').bind('swipeone',swipe);
       function swipe(type, options) {
         var direction = options.delta[0].lastX;
-        if(direction < 0) {
+        if(direction > 0) {
           //left
           var linkLeft = $("#link_previous")[0];
           if (linkLeft) location.href = linkLeft.href;
