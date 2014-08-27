@@ -36,13 +36,13 @@ document.write("<style>div.fonkel { background:" + pastelColors() + ";</style>")
 
   {% if previous %}
   <div class="previous nav">
-    <a href="{{ previous.get_absolute_url }}"><img src="{% static 'previous.png' %}"/>Vorige</a>
+    <a id="link_previous" href="{{ previous.get_absolute_url }}"><img src="{% static 'previous.png' %}"/>Vorige</a>
   </div>
   {% endif %}
   
   {% if next %}
   <div class="next nav">
-    <a href="{{ next.get_absolute_url }}">Volgende<img src="{% static 'next.png' %}"/></a>
+    <a id="link_next" href="{{ next.get_absolute_url }}">Volgende<img src="{% static 'next.png' %}"/></a>
   </div>
   {% endif %}
 

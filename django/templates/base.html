@@ -33,14 +33,64 @@
       </div>
     </div>
     <script>
-    var gotoLink = function(event) {
-      event.preventDefault();
-      location.href = event.target.href;
-    };
-    var anchors = document.getElementsByTagName("a");
-    for (var i=0; i<anchors.length; i++) {
-      anchors[i].addEventListener("click", gotoLink);
-    }
+      // For iOS: do not allow links to pass through, since they break out of the bookmarked app.
+      var gotoLink = function(event) {
+        event.preventDefault();
+        location.href = event.target.href;
+      };
+      var anchors = document.getElementsByTagName("a");
+      for (var i=0; i<anchors.length; i++) {
+        anchors[i].addEventListener("click", gotoLink);
+      }
+
+      // Swiping for mobile devices
+      document.addEventListener('touchstart', handleTouchStart, false);        
+      document.addEventListener('touchmove', handleTouchMove, false);
+
+      var xDown = null;                                                        
+      var yDown = null;                                                        
+
+      function handleTouchStart(evt) {                                         
+        xDown = evt.touches[0].clientX;                                      
+        yDown = evt.touches[0].clientY;                                      
+      }                                             
+
+      function handleTouchMove(evt) {
+        if ( ! xDown || ! yDown ) {
+          return;
+        }
+
+        var xUp = evt.touches[0].clientX;                                    
+        var yUp = evt.touches[0].clientY;
+
+        var xDiff = xDown - xUp;
+        var yDiff = yDown - yUp;
+
+        if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
+          if ( xDiff > 0 ) {
+            /* left swipe */ 
+            var prev = document.getElementById("link_previous");
+            if (prev) {
+              location.href = prev.href;
+            }
+          } else {
+            /* right swipe */
+            var next = document.getElementById("link_next");
+            if (next) {
+              location.href = next.href;
+            }
+          }                       
+        } else {
+          if ( yDiff > 0 ) {
+            /* up swipe */ 
+          } else { 
+            /* down swipe */
+          }                                                                 
+        }
+        /* reset values */
+        xDown = null;
+        yDown = null;                                             
+      }
     </script>
   </body>
 </html>
