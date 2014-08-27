@@ -32,6 +32,9 @@
         </p>
       </div>
     </div>
+    <script src="{% static 'jquery-1.11.1.min.js' %}"></script>
+    <script src="{% static 'jgestures.min.js' %}"></script>
+
     <script>
       // For iOS: do not allow links to pass through, since they break out of the bookmarked app.
       var gotoLink = function(event) {
@@ -42,54 +45,18 @@
       for (var i=0; i<anchors.length; i++) {
         anchors[i].addEventListener("click", gotoLink);
       }
+      
+      // Swiping
+      $('.fonkel').bind('swipeleft',swipeLeft);
+      $('.fonkel').bind('swiperight',swipeRight);
 
-      // Swiping for mobile devices
-      document.addEventListener('touchstart', handleTouchStart, false);        
-      document.addEventListener('touchend', handleTouchEnd, false);
-
-      var xDown = null;                                                        
-      var yDown = null;                                                        
-
-      function handleTouchStart(evt) {                                         
-        xDown = evt.touches[0].clientX;                                      
-        yDown = evt.touches[0].clientY;                                      
-      }                                             
-
-      function handleTouchEnd(evt) {
-        if ( ! xDown || ! yDown ) {
-          return;
-        }
-
-        var xUp = evt.changedTouches[0].clientX;                                    
-        var yUp = evt.changedTouches[0].clientY;
-
-        var xDiff = xDown - xUp;
-        var yDiff = yDown - yUp;
-
-        if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
-          if ( xDiff > 0 ) {
-            /* left swipe */ 
-            var prev = document.getElementById("link_previous");
-            if (prev) {
-              location.href = prev.href;
-            }
-          } else {
-            /* right swipe */
-            var next = document.getElementById("link_next");
-            if (next) {
-              location.href = next.href;
-            }
-          }                       
-        } else {
-          if ( yDiff > 0 ) {
-            /* up swipe */ 
-          } else { 
-            /* down swipe */
-          }                                                                 
-        }
-        /* reset values */
-        xDown = null;
-        yDown = null;                                             
+      function swipeLeft() {
+        var link = $("#link_previous");
+        if (link) location.href = link.href;
+      }
+      function swipeRight() {
+        var link = $("#link_next");
+        if (link) location.href = link.href;
       }
     </script>
   </body>
