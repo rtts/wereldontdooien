@@ -45,7 +45,7 @@
 
       // Swiping for mobile devices
       document.addEventListener('touchstart', handleTouchStart, false);        
-      document.addEventListener('touchmove', handleTouchMove, false);
+      document.addEventListener('touchend', handleTouchEnd, false);
 
       var xDown = null;                                                        
       var yDown = null;                                                        
@@ -55,7 +55,7 @@
         yDown = evt.touches[0].clientY;                                      
       }                                             
 
-      function handleTouchMove(evt) {
+      function handleTouchEnd(evt) {
         if ( ! xDown || ! yDown ) {
           return;
         }
