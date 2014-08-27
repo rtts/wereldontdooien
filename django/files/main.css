@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'Sail';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Sail'), local('Sail-Regular'), url(/static/sail.woff) format('woff');
+}
+
 body, html {
     margin: 0;
     padding: 0;
@@ -56,8 +63,8 @@ div.nav img {
 div.nav a:link, div.nav a:visited, div.random a:link, div.random a:visited {
     color: #321e18;
     text-decoration: none;
-    font-family: sans;
-    font-weight: bold;
+    font-family: Sail, sans;
+    font-size: 1.5em;
 }
 
 div.previous {
@@ -75,8 +82,7 @@ div.random {
 div.footer {
     margin-top: 2em;
     padding-bottom: 1em;
-    font-family: serif;
-    font-style: italic;
+    font-family: sans;
     opacity: 0.5;
     font-size: 0.8em;
 }
@@ -85,7 +91,7 @@ div.footer a {
     font-size: 1.25em;
 }
 
-@media all and (max-width: 800px) {
+@media (max-width: 888px) {
     div.outer {
         padding: 0 2%;
     }
