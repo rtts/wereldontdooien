@@ -51,11 +51,11 @@
       $('.fonkel').bind('swiperight',swipeRight);
 
       function swipeLeft() {
-        var link = $("#link_previous");
+        var link = $("#link_previous")[0];
         if (link) location.href = link.href;
       }
       function swipeRight() {
-        var link = $("#link_next");
+        var link = $("#link_next")[0];
         if (link) location.href = link.href;
       }
     </script>
