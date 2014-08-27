@@ -47,16 +47,18 @@
       }
       
       // Swiping
-      $('.fonkel').on('swipeleft',swipeLeft);
-      $('.fonkel').on('swiperight',swipeRight);
-
-      function swipeRight() {
-        var link = $("#link_previous")[0];
-        if (link) location.href = link.href;
-      }
-      function swipeLeft() {
-        var link = $("#link_next")[0];
-        if (link) location.href = link.href;
+      $('.fonkel').bind('swipeone',swipe);
+      function swipe(type, options) {
+        var direction = options.delta[0].lastX;
+        if(direction < 0) {
+          //left
+          var linkLeft = $("#link_previous")[0];
+          if (linkLeft) location.href = linkLeft.href;
+        } else {
+          //right
+          var linkRight = $("#link_next")[0];
+          if (linkRight) location.href = linkRight.href;
+        }
       }
     </script>
   </body>
