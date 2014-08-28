@@ -9,10 +9,10 @@
         android:title="@string/pref_time"
         android:defaultValue="08:00"
         android:dependency="pref_bool"/>
-    <ListPreference
-        android:key="surprise_category"
-        android:title="Verrassingscategorie"
-        android:entries="@array/surprise_categories"
-        android:entryValues="@array/surprise_values"
-        android:defaultValue="0"/>
+    <!--<ListPreference-->
+        <!--android:key="surprise_category"-->
+        <!--android:title="Verrassingscategorie"-->
+        <!--android:entries="@array/surprise_categories"-->
+        <!--android:entryValues="@array/surprise_values"-->
+        <!--android:defaultValue="0"/>-->
 </PreferenceScreen>
