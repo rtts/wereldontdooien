@@ -52,5 +52,8 @@
     <string name="title_activity_splash">Wereld Ontdooien</string>
     <string name="email">wereldontdooisters@gmail.com</string>
     <string name="email_help">Mail je foto\'s en verhalen naar</string>
+    <string name="action_about">Over ons</string>
+    <string name="link_wereldontdooisters">Wereld Ontdooien is een project van \n<a href="http://www.wereldontdooisters.nl">de Wereldontdooisters</a></string>
+    <string name="link_returntothesource">In samenwerking met \n<a href="http://www.returntothesource.nl">Return to the Source</a></string>
 
 </resources>

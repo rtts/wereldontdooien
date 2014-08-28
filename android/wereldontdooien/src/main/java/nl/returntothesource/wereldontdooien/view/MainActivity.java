@@ -174,6 +174,10 @@ public class MainActivity extends ActionBarActivity {
             case R.id.action_refresh:
                 new DownloadFonkelsTask().execute();
                 return true;
+            case R.id.action_about:
+                Intent intent = new Intent(this, AboutActivity.class);
+                this.startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

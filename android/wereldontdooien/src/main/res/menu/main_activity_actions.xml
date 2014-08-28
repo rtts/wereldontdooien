@@ -11,6 +11,11 @@
         android:showAsAction="always"
         yourapp:showAsAction="always"
         android:title="@string/action_refresh"/>
+    <item android:id="@+id/action_about"
+        android:icon="@drawable/ic_action_about"
+        android:showAsAction="ifRoom"
+        yourapp:showAsAction="ifRoom"
+        android:title="@string/action_about"/>
     <item android:id="@+id/action_settings"
         android:showAsAction="never"
         yourapp:showAsAction="never"

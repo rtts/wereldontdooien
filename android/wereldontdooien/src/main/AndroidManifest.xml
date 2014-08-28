@@ -37,6 +37,15 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
+            android:name=".view.AboutActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/action_about"
+            android:parentActivityName=".view.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
             android:name=".view.SplashActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_splash" >
