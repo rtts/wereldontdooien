@@ -153,18 +153,30 @@ public class ImageLoader {
         
         @Override
         public void run() {
+            Bitmap bmp = null;
             try{
-                if(imageViewReused(photoToLoad))
-                    return;
-                Bitmap bmp=getBitmap(photoToLoad.url);
-                memoryCache.put(photoToLoad.url, bmp);
-                if(imageViewReused(photoToLoad))
-                    return;
-                BitmapDisplayer bd=new BitmapDisplayer(bmp, photoToLoad);
-                handler.post(bd);
+                bmp = runContent();
             }catch(Throwable th){
-//                th.printStackTrace();
+                //th.printStackTrace();
+                try {
+                    System.gc();
+                    bmp = runContent();
+                } catch (Throwable th2) {
+                    //th2.printStackTrace();
+                }
             }
+            BitmapDisplayer bd=new BitmapDisplayer(bmp, photoToLoad);
+            handler.post(bd);
+        }
+
+        private Bitmap runContent() {
+            if(imageViewReused(photoToLoad))
+                return null;
+            Bitmap bmp=getBitmap(photoToLoad.url);
+            memoryCache.put(photoToLoad.url, bmp);
+            if(imageViewReused(photoToLoad))
+                return null;
+            return bmp;
         }
     }
     
@@ -193,6 +205,7 @@ public class ImageLoader {
                     @Override
                     public void onClick(View v) {
                         ImageView imgView = (ImageView) v;
+                        //System.gc();
                         String url = imageViews.get(v);
                         DisplayImage(url, imgView);
                     }
