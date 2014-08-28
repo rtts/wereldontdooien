@@ -11,15 +11,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
 
 import java.util.Calendar;
 import java.util.List;
 
+import nl.returntothesource.wereldontdooien.R;
 import nl.returntothesource.wereldontdooien.io.Fonkel;
 import nl.returntothesource.wereldontdooien.io.FonkelIO;
 import nl.returntothesource.wereldontdooien.view.MainActivity;
-import nl.returntothesource.wereldontdooien.R;
 import nl.returntothesource.wereldontdooien.view.TimePreference;
 
 /**
@@ -30,15 +29,15 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        Log.d("AlarmReceiver", "Alarm received");
+        //Log.d("AlarmReceiver", "Alarm received");
         // TODO: check for internet connection
         new Thread(new Runnable() {
             @Override
             public void run() {
                 List<Fonkel> currentFonkels = FonkelIO.readFonkelsFromDisk(context);
-                Log.d("AlarmReceiver", "current: " + currentFonkels);
+                //Log.d("AlarmReceiver", "current: " + currentFonkels);
                 List<Fonkel> newFonkels = FonkelIO.readFonkelsFromApi();
-                Log.d("AlarmReceiver", "new: " + newFonkels);
+                //Log.d("AlarmReceiver", "new: " + newFonkels);
                 // Only send notification when there are new fonkels
                 if (newFonkels != null && newFonkels.size() > 0) {
                     FonkelIO.writeFonkelsToDisk(context, newFonkels);
@@ -96,7 +95,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         calendar.set(Calendar.HOUR_OF_DAY, TimePreference.getHour(time));
         calendar.set(Calendar.MINUTE, TimePreference.getMinute(time));
         calendar.set(Calendar.SECOND, 0);
-        Log.d("AlarmReceiver", "Alarm set for: " + calendar.getTime().toString());
+        //Log.d("AlarmReceiver", "Alarm set for: " + calendar.getTime().toString());
 
         // With setInexactRepeating(), you have to use one of the AlarmManager interval
         // constants--in this case, AlarmManager.INTERVAL_DAY.

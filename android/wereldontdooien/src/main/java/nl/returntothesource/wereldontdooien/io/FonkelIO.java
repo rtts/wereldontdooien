@@ -1,7 +1,6 @@
 package nl.returntothesource.wereldontdooien.io;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -41,15 +40,15 @@ public class FonkelIO {
             final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             Type fonkelType = new TypeToken<List<Fonkel>>() {}.getType();
             List<Fonkel> fonkels = new Gson().fromJson(reader, fonkelType);
-            Log.d("FonkelIO", "Fonkels from api: " + fonkels);
+            //Log.d("FonkelIO", "Fonkels from api: " + fonkels);
             return fonkels;
         } catch (IOException e) {
-            Log.w("FonkelIO", "Failed to read fonkels from api");
-            e.printStackTrace();
+            //Log.w("FonkelIO", "Failed to read fonkels from api");
+            //e.printStackTrace();
             return null;
         } catch (JsonSyntaxException e) {
-            Log.w("FonkelIO", "Failed to read fonkels from api");
-            e.printStackTrace();
+            //Log.w("FonkelIO", "Failed to read fonkels from api");
+            //e.printStackTrace();
             return null;
         } finally {
             if (urlConnection != null) urlConnection.disconnect();
@@ -64,11 +63,11 @@ public class FonkelIO {
 
     public static void writeFonkelsToDisk(Context context, List<Fonkel> fonkels) {
         try {
-            Log.d("FonkelIO", "Write to disk: " + fonkels);
+            //Log.d("FonkelIO", "Write to disk: " + fonkels);
             FileOutputStream file = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
             file.write(new Gson().toJson(fonkels).getBytes());
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
@@ -81,11 +80,11 @@ public class FonkelIO {
             final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             Type fonkelType = new TypeToken<List<Fonkel>>() {}.getType();
             List<Fonkel> fonkels = new Gson().fromJson(reader, fonkelType);
-            Log.d("FonkelIO", "Read from disk: " + fonkels);
+            //Log.d("FonkelIO", "Read from disk: " + fonkels);
             return fonkels;
         }
         catch(Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return null;
     }
