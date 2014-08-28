@@ -37,6 +37,6 @@ if not file_exists("/etc/cron.d/wereldontdooien"):
     sudo("echo '0 3 * * * %s cd %s && ./publish.sh' >> /etc/cron.d/wereldontdooien" % (user, abspath('django')))
 done()
 
-serve_dynamically(host, virtualenv='wereldontdooien', static_dir=abspath('django/static'), chdir=abspath('django'), wsgi_file='project/wsgi.py', aliases=aliases)
+serve_dynamically(host, virtualenv='wereldontdooien', static_dir=abspath('django/static'), media_url='/media', media_dir='/srv/wereldontdooien', chdir=abspath('django'), wsgi_file='project/wsgi.py', aliases=aliases)
 
 done('Deployment complete!')
