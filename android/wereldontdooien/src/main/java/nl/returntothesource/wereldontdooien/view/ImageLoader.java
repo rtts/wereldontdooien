@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.view.View;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -44,6 +45,7 @@ public class ImageLoader {
     public void DisplayImage(String url, ImageView imageView)
     {
         imageViews.put(imageView, url);
+        imageView.setOnClickListener(null);
         Bitmap bitmap=memoryCache.get(url);
         if(bitmap!=null)
             setImageBitmap(imageView, bitmap);
@@ -75,8 +77,8 @@ public class ImageLoader {
             Bitmap bitmap=null;
             URL imageUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();
-            conn.setConnectTimeout(30000);
-            conn.setReadTimeout(30000);
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
             conn.setInstanceFollowRedirects(true);
             InputStream is=conn.getInputStream();
             OutputStream os = new FileOutputStream(f);
@@ -187,6 +189,14 @@ public class ImageLoader {
                 setImageBitmap(photoToLoad.imageView, bitmap);
             else
                 photoToLoad.imageView.setImageResource(stub_id);
+                photoToLoad.imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ImageView imgView = (ImageView) v;
+                        String url = imageViews.get(v);
+                        DisplayImage(url, imgView);
+                    }
+                });
                 //photoToLoad.imageView.setVisibility(View.INVISIBLE);
         }
     }

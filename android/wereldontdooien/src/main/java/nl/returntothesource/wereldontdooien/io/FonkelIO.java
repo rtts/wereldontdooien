@@ -33,6 +33,7 @@ public class FonkelIO {
         try {
             URL urlToRequest = new URL(BASE_URL + "api/");
             urlConnection = (HttpURLConnection) urlToRequest.openConnection();
+            urlConnection.setConnectTimeout(5000);
             int statusCode = urlConnection.getResponseCode();
             if (statusCode != HttpURLConnection.HTTP_OK)
                 throw new IOException("Http Status " + statusCode);
