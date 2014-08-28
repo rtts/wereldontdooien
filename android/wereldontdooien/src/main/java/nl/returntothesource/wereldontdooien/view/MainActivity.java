@@ -1,5 +1,6 @@
 package nl.returntothesource.wereldontdooien.view;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -104,7 +105,7 @@ public class MainActivity extends ActionBarActivity {
 
                 adapter.setImages(result);
                 adapter.notifyDataSetChanged();
-                viewPager.setCurrentItem(result.size()-1, false);
+                viewPager.setCurrentItem(result.size() - 1, false);
                 viewPager.setVisibility(View.VISIBLE);
                 findViewById(R.id.progress_bar).setVisibility(View.GONE);
             } else {
@@ -274,6 +275,7 @@ public class MainActivity extends ActionBarActivity {
         newFragment.show(getSupportFragmentManager(), "nofonkelsincategory");
     }
 
+    @SuppressLint("ValidFragment")
     public class NoFonkelsDialogFragment extends DialogFragment {
 
         @Override
@@ -292,6 +294,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    @SuppressLint("ValidFragment")
     public class NoFonkelsInCategoryDialogFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
