@@ -99,7 +99,6 @@ public class MainActivity extends ActionBarActivity {
 
         protected void onPostExecute(List<Fonkel> result) {
             if (result != null && result.size() > 0) {
-                findViewById(R.id.progress_bar).setVisibility(View.GONE);
                 ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
                 ImagePagerAdapter adapter = (ImagePagerAdapter) viewPager.getAdapter();
 
@@ -107,6 +106,7 @@ public class MainActivity extends ActionBarActivity {
                 adapter.notifyDataSetChanged();
                 viewPager.setCurrentItem(result.size()-1, false);
                 viewPager.setVisibility(View.VISIBLE);
+                findViewById(R.id.progress_bar).setVisibility(View.GONE);
             } else {
                 this.cancel(false);
             }
