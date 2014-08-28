@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
-import android.view.View;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -22,6 +21,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import nl.returntothesource.wereldontdooien.R;
 import nl.returntothesource.wereldontdooien.io.FileCache;
 import nl.returntothesource.wereldontdooien.io.MemoryCache;
 import nl.returntothesource.wereldontdooien.io.Utils;
@@ -39,7 +39,8 @@ public class ImageLoader {
         executorService=Executors.newFixedThreadPool(5);
     }
 
-    //final int stub_id=R.drawable.stub;
+    final int loading_id = R.drawable.loading;
+    final int stub_id= R.drawable.stub;
     public void DisplayImage(String url, ImageView imageView)
     {
         imageViews.put(imageView, url);
@@ -49,8 +50,8 @@ public class ImageLoader {
         else
         {
             queuePhoto(url, imageView);
-            //imageView.setImageResource(stub_id);
-            imageView.setVisibility(View.INVISIBLE);
+            imageView.setImageResource(loading_id);
+            //imageView.setVisibility(View.INVISIBLE);
         }
     }
         
@@ -185,8 +186,8 @@ public class ImageLoader {
             if(bitmap!=null)
                 setImageBitmap(photoToLoad.imageView, bitmap);
             else
-                //photoToLoad.imageView.setImageResource(stub_id);
-                photoToLoad.imageView.setVisibility(View.INVISIBLE);
+                photoToLoad.imageView.setImageResource(stub_id);
+                //photoToLoad.imageView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -198,7 +199,7 @@ public class ImageLoader {
     public void setImageBitmap(ImageView imgView, Bitmap bitmap) {
 //        bitmap = ImageHelper.getRoundedCornerBitmap(bitmap);
         imgView.setImageBitmap(bitmap);
-        imgView.setVisibility(View.VISIBLE);
+        //imgView.setVisibility(View.VISIBLE);
     }
 
 }
