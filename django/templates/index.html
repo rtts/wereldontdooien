@@ -32,7 +32,7 @@ document.write("<style>div.fonkel { background:" + pastelColors() + ";</style>")
 {% block content %}
 
 <div class="fonkel">
-  <img width="500" height="500" alt="{{ current.tekst }}" src="{{ current.afbeelding.url }}" />
+  <img id="fonkel" width="500" height="500" alt="{{ current.tekst }}" src="{{ current.afbeelding.url }}" />
 
   {% if previous %}
   <div class="previous nav">
