@@ -18,7 +18,7 @@ import java.util.List;
 import nl.returntothesource.wereldontdooien.R;
 import nl.returntothesource.wereldontdooien.io.Fonkel;
 import nl.returntothesource.wereldontdooien.io.FonkelIO;
-import nl.returntothesource.wereldontdooien.view.MainActivity;
+import nl.returntothesource.wereldontdooien.view.SplashActivity;
 import nl.returntothesource.wereldontdooien.view.TimePreference;
 
 /**
@@ -53,9 +53,9 @@ public class AlarmReceiver extends BroadcastReceiver {
                                 .setContentTitle(context.getString(R.string.notification_title))
                                 .setContentText(context.getString(R.string.notification_text))
                                 .setAutoCancel(true);
-                        Intent resultIntent = new Intent(context, MainActivity.class);
+                        Intent resultIntent = new Intent(context, SplashActivity.class);
                         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                        stackBuilder.addParentStack(MainActivity.class);
+                        stackBuilder.addParentStack(SplashActivity.class);
                         stackBuilder.addNextIntent(resultIntent);
                         PendingIntent resultPendingIntent =
                                 stackBuilder.getPendingIntent(
@@ -76,8 +76,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     public static void setAlarm(Context context) {
         AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent newIntent = new Intent(context, AlarmReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, newIntent, 0);
-
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
+                newIntent, PendingIntent.FLAG_NO_CREATE);
         // Set the alarm to start at the time that the user has as preference.
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         String time = pref.getString("pref_time", null);
@@ -99,7 +99,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         // With setInexactRepeating(), you have to use one of the AlarmManager interval
         // constants--in this case, AlarmManager.INTERVAL_DAY.
-        alarmMgr.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, alarmIntent);
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 }

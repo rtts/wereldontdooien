@@ -7,7 +7,7 @@
     <nl.returntothesource.wereldontdooien.view.TimePreference
         android:key="pref_time"
         android:title="@string/pref_time"
-        android:defaultValue="08:00"
+        android:defaultValue="14:00"
         android:dependency="pref_bool"/>
     <!--<ListPreference-->
         <!--android:key="surprise_category"-->
