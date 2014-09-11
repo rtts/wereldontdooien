@@ -33,7 +33,7 @@ div.fonkel {
     display: inline-block;
     max-width: calc(98% - 32px);
     padding: 20px;
-    border: 2px solid #321e18;
+    //border: 2px solid #321e18;
     border-radius: 20px;
 }
 
@@ -79,6 +79,23 @@ div.random {
     display: none;
 }
 
+div.action {
+    margin-top: 20px;
+    font-family: Sail;
+    font-size: 28px;
+    color: #321e18;
+}
+
+div.action a {
+    color: #321e18;
+}
+
+@media (max-width: 500px) {
+    div.action {
+        font-size: 20px;
+    }
+}
+
 div.footer {
     margin-top: 2em;
     padding-bottom: 1em;
@@ -92,6 +109,9 @@ div.footer a {
 }
 
 @media (max-width: 888px) {
+    div.action {
+        margin-top: 40px;
+      }
     div.outer {
         padding: 0 2%;
     }
