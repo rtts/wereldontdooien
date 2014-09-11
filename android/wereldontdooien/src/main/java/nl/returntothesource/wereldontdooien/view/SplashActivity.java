@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import nl.returntothesource.wereldontdooien.R;
+import nl.returntothesource.wereldontdooien.receiver.AlarmReceiver;
 
 public class SplashActivity extends Activity {
 
@@ -19,6 +20,7 @@ public class SplashActivity extends Activity {
         Bitmap b = BitmapFactory.decodeResource(SplashActivity.this.getResources(),
                 R.drawable.splash);
         squareView.setImageBitmap(ImageHelper.getRoundedCornerBitmap(b));
+        AlarmReceiver.setAlarm(SplashActivity.this);
     }
 
     public void next(View v) {

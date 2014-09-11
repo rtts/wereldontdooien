@@ -32,7 +32,6 @@ import java.util.Random;
 import nl.returntothesource.wereldontdooien.R;
 import nl.returntothesource.wereldontdooien.io.Fonkel;
 import nl.returntothesource.wereldontdooien.io.FonkelIO;
-import nl.returntothesource.wereldontdooien.receiver.AlarmReceiver;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -51,7 +50,6 @@ public class MainActivity extends ActionBarActivity {
         viewPager.setAdapter(adapter);
 
         // Set the alarm for the daily notification, if this is not yet done
-        AlarmReceiver.setAlarm(MainActivity.this);
         new DownloadFonkelsTask().execute();
     }
     @Override protected void onDestroy() {
