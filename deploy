@@ -1,42 +1,25 @@
 #!/usr/bin/env python
-from r2src.deploy import *
+from fabric.api import *
+from fabric.contrib.files import exists
 
-host = 'wereldontdooien.nl'
-aliases = ['www.wereldontdooien.nl']
+env.host_string = 'rtts.eu'
+env.user = 'www'
+local('rsync -av --delete django/ www@rtts.eu:wereldontdooien')
 
-bootstrap()
-install('python-dev postgresql postgresql-server-dev-all gettext')
-setup_virtualenv('wereldontdooien')
-
-explain("Checking /srv/wereldontdooien")
-dir_exists('/srv/wereldontdooien') or abort("/srv/wereldontdooien doesn't exist!")
-done()
-
-upload()
-
-explain("Collecting static files...")
-with cd(abspath('django')):
-    vrun('wereldontdooien', './manage.py collectstatic')
-done()
-
-explain("Generating locales...")
-with cd(abspath('django')):
-    vrun('wereldontdooien', './manage.py compilemessages')
-done()
-
-explain("Syncing database...")
-with cd(abspath('django')):
-    vrun('wereldontdooien', './manage.py syncdb')
-done()
+with cd('wereldontdooien'):
+    with prefix('workon wereldontdooien'):
+        run('yes yes | ./manage.py collectstatic')
+        run('./manage.py compilemessages')
+        run('./manage.py syncdb')
 
 # Uncomment the following to enable nightly publishing:
+#env.user = 'origin'
+#if not exists("/etc/cron.d/wereldontdooien"):
+#    sudo("echo 'SHELL=/bin/sh' > /etc/cron.d/wereldontdooien")
+#    sudo("echo '0 3 * * * %s cd %s && ./publish.sh' >> /etc/cron.d/wereldontdooien" % (user, abspath('django')))
+#done()
 
-explain("Installing crontab...")
-if not file_exists("/etc/cron.d/wereldontdooien"):
-    sudo("echo 'SHELL=/bin/sh' > /etc/cron.d/wereldontdooien")
-    sudo("echo '0 3 * * * %s cd %s && ./publish.sh' >> /etc/cron.d/wereldontdooien" % (user, abspath('django')))
-done()
+env.user = 'origin'
+sudo('killall -SIGHUP uwsgi')
 
-serve_dynamically(host, virtualenv='wereldontdooien', static_dir=abspath('django/static'), media_url='/media', media_dir='/srv/wereldontdooien', chdir=abspath('django'), wsgi_file='project/wsgi.py', aliases=aliases)
-
-done('Deployment complete!')
+print "Deployment succeeded!"
