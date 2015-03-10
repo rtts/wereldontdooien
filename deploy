@@ -1,25 +1,45 @@
 #!/usr/bin/env python
 from fabric.api import *
 from fabric.contrib.files import exists
+from fabric.colors import red, green
 
-env.host_string = 'rtts.eu'
+project_name = 'wereldontdooien'
+env.host_string = 'wereldontdooien.nl'
+
+# Transfer files
+print(red('\nTransferring files...', bold=True))
 env.user = 'www'
-local('rsync -av --delete django/ www@rtts.eu:wereldontdooien')
+local('rsync -av --delete django/ %s@%s:%s' % (env.user, env.host_string, project_name))
 
-with cd('wereldontdooien'):
-    with prefix('workon wereldontdooien'):
+# Initialize virtualenv
+print(red('\nCreating virtualenv...', bold=True))
+if not exists('.virtualenvs/%s' % project_name):
+    run('mkvirtualenv -p /usr/bin/python2 %s' % project_name)
+with cd(project_name):
+    with prefix('workon %s' % project_name):
+        run('pip install -r requirements.txt')
+
+        # Django householding
+        print(red('\nRunning Django household commands', bold=True))
+        run('./manage.py syncdb')
+        run('mkdir -p /srv/%s' % project_name)
         run('yes yes | ./manage.py collectstatic')
         run('./manage.py compilemessages')
-        run('./manage.py syncdb')
 
-# Uncomment the following to enable nightly publishing:
-#env.user = 'origin'
-#if not exists("/etc/cron.d/wereldontdooien"):
-#    sudo("echo 'SHELL=/bin/sh' > /etc/cron.d/wereldontdooien")
-#    sudo("echo '0 3 * * * %s cd %s && ./publish.sh' >> /etc/cron.d/wereldontdooien" % (user, abspath('django')))
-#done()
-
+# Place config files
+print(red('\n(Re)placing config files...', bold=True))
 env.user = 'origin'
-sudo('killall -SIGHUP uwsgi')
+put('uwsgi.ini', '/etc/uwsgi.d/%s.ini' % project_name, use_sudo=True)
+put('nginx.conf', '/etc/nginx/conf.d/%s.conf' % project_name, use_sudo=True)
 
-print "Deployment succeeded!"
+# Generate certificates
+print(red('\nGenerating SSL certificate...', bold=True))
+with cd('/etc/pki/tls/certs'):
+    sudo('echo -e \'NL\\n\\n\\nReturn to the Source\\n\\n%(host)s\\ninfo@%(host)s\\n\' | make %(host)s.pem' % {'host': env.host_string})
+
+# Reload
+print(red('\nReloading...', bold=True))
+sudo('systemctl reload uwsgi')
+sudo('systemctl reload nginx')
+run('systemctl status -n0 uwsgi')
+run('systemctl status -n0 nginx')

@@ -24,7 +24,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'wereldontdooien'
 )
- 
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,7 +56,7 @@ LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "files"),)
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = '/srv/wereldontdooien/static'
 
-MEDIA_ROOT = '/srv/wereldontdooien'
+MEDIA_ROOT = '/srv/wereldontdooien/media'
 MEDIA_URL = '/media/'
