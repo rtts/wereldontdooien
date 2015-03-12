@@ -31,11 +31,7 @@ print(red('\n(Re)placing config files...', bold=True))
 env.user = 'origin'
 put('uwsgi.ini', '/etc/uwsgi.d/%s.ini' % project_name, use_sudo=True)
 put('nginx.conf', '/etc/nginx/conf.d/%s.conf' % project_name, use_sudo=True)
-
-# Generate certificates
-print(red('\nGenerating SSL certificate...', bold=True))
-with cd('/etc/pki/tls/certs'):
-    sudo('echo -e \'NL\\n\\n\\nReturn to the Source\\n\\n%(host)s\\ninfo@%(host)s\\n\' | make %(host)s.pem' % {'host': env.host_string})
+put('crontab', '/etc/cron.d/%s' % project_name, use_sudo=True)
 
 # Reload
 print(red('\nReloading...', bold=True))
