@@ -24,7 +24,7 @@
       </div>
       {% block content %}
       {% endblock %}
-      
+
       <div class="action">
         Post al je fotos en ervaringen op<br>
         <a href="https://nl-nl.facebook.com/DeWereldontdooisters">de facebook van De Wereldontdooisters</a>!
@@ -45,28 +45,28 @@
     <script>
       // For iOS: do not allow links to pass through, since they break out of the bookmarked app.
       if(("standalone" in window.navigator) && window.navigator.standalone){
-       
+
         // If you want to prevent remote links in standalone web apps opening Mobile Safari, change 'remotes' to true
         var noddy, remotes = false;
-        
+
         document.addEventListener('click', function(event) {
-          
+
           noddy = event.target;
-          
+
           // Bubble up until we hit link or top HTML element. Warning: BODY element is not compulsory so better to stop on HTML
           while(noddy.nodeName !== "A" && noddy.nodeName !== "HTML") {
                 noddy = noddy.parentNode;
             }
-          
+
           if('href' in noddy && noddy.href.indexOf('http') !== -1 && (noddy.href.indexOf(document.location.host) !== -1 || remotes))
           {
             event.preventDefault();
             document.location.href = noddy.href;
           }
-        
+
         },false);
       }
-      
+
       // Swiping
       $('.fonkel').bind('swipeone',swipe);
       function swipe(type, options) {
@@ -82,5 +82,18 @@
         }
       }
     </script>
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+      var u="//dashboard.rtts.eu/";
+      _paq.push(['setTrackerUrl', u+'piwik.php']);
+      _paq.push(['setSiteId', 4]);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <noscript><p><img src="//dashboard.rtts.eu/piwik.php?idsite=4" style="border:0;" alt="" /></p></noscript>
   </body>
 </html>

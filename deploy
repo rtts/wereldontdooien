@@ -35,7 +35,7 @@ put('crontab', '/etc/cron.d/%s' % project_name, use_sudo=True)
 
 # Reload
 print(red('\nReloading...', bold=True))
-sudo('systemctl reload uwsgi')
+#sudo('systemctl reload uwsgi')
 sudo('systemctl reload nginx')
 run('systemctl status -n0 uwsgi')
 run('systemctl status -ln3 nginx')
