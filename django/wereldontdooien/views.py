@@ -1,6 +1,7 @@
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from wereldontdooien.models import PublishedFonkel as Fonkel
 from wereldontdooien.models import UnpublishedFonkel
 import json
@@ -17,6 +18,7 @@ def home(request):
             "current": current,
             })
 
+@login_required
 def nadja(request, nr=''):
     if not nr:
         return redirect(UnpublishedFonkel.objects.all()[0])
@@ -37,7 +39,7 @@ def nadja(request, nr=''):
             "previous": previous,
             "next": next,
             })
-    
+
 def fonkel(request, nr):
     current = get_object_or_404(Fonkel, id=nr)
     try:
@@ -68,9 +70,6 @@ def random(request):
     except IndexError:
         return HttpResponse(EMPTY_DB_ERROR)
     return redirect(fonkel)
-
-def info(request):
-    render(request, "info.html", {})
 
 def publish(request):
     if not request.user.is_authenticated():

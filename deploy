@@ -31,7 +31,6 @@ print(red('\n(Re)placing config files...', bold=True))
 env.user = 'origin'
 put('uwsgi.ini', '/etc/uwsgi.d/%s.ini' % project_name, use_sudo=True)
 put('nginx.conf', '/etc/nginx/conf.d/%s.conf' % project_name, use_sudo=True)
-put('crontab', '/etc/cron.d/%s' % project_name, use_sudo=True)
 
 # Reload
 print(red('\nReloading...', bold=True))

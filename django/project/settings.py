@@ -1,13 +1,32 @@
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-SECRET_KEY = 'pakbta+b_wapi93&chh)o&2qwuufd2(zy^=4b^-&4hz8*isa)9'
+try:
+    import uwsgi
+    DEBUG = False
+except:
+    DEBUG = True
 
-DEBUG = False
-TEMPLATE_DEBUG = DEBUG
+ADMINS = (('JJ', 'jj@rtts.eu'),)
+SERVER_EMAIL = 'wereldontdooien@rtts.eu'
 
 ALLOWED_HOSTS = ['wereldontdooien.nl', 'www.wereldontdooien.nl', '127.0.0.1', 'localhost']
+LOGIN_URL = 'admin:login'
+ROOT_URLCONF = 'project.urls'
+WSGI_APPLICATION = 'project.wsgi.application'
+USE_TZ = True
+TIME_ZONE = 'Europe/Amsterdam'
+LANGUAGE_CODE = 'nl'
+USE_I18N = True
+USE_L10N = True
+LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
+TEMPLATE_DEBUG = DEBUG
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "files"),)
+STATIC_ROOT = '/srv/wereldontdooien/static'
+MEDIA_ROOT = '/srv/wereldontdooien/media'
+MEDIA_URL = '/media/'
+SECRET_KEY = 'pakbta+b_wapi93&chh)o&2qwuufd2(zy^=4b^-&4hz8*isa)9'
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, "templates"),
@@ -34,10 +53,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'project.urls'
-
-WSGI_APPLICATION = 'project.wsgi.application'
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -45,18 +60,3 @@ DATABASES = {
         'USER': 'wereldontdooien',
     }
 }
-
-USE_TZ = True
-TIME_ZONE = 'UTC'
-
-LANGUAGE_CODE = 'nl'
-USE_I18N = True
-USE_L10N = True
-LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
-
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "files"),)
-STATIC_ROOT = '/srv/wereldontdooien/static'
-
-MEDIA_ROOT = '/srv/wereldontdooien/media'
-MEDIA_URL = '/media/'
