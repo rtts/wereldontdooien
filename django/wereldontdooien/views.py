@@ -13,10 +13,12 @@ def home(request):
         current = Fonkel.objects.all()[0]
     except IndexError:
         current = ""
-        # return render(request, "launchpage.html")
-    return render(request, "splash.html", {
-            "current": current,
-            })
+
+    #return render(request, "splash.html", {
+    #        "current": current,
+    #        })
+
+    return redirect(current);
 
 @login_required
 def nadja(request, nr=''):
