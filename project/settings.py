@@ -10,7 +10,7 @@ except:
 ADMINS = (('JJ', 'jj@rtts.eu'),)
 SERVER_EMAIL = 'wereldontdooien@rtts.eu'
 
-ALLOWED_HOSTS = ['wereldontdooien.nl', 'www.wereldontdooien.nl', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 LOGIN_URL = 'admin:login'
 ROOT_URLCONF = 'project.urls'
 WSGI_APPLICATION = 'project.wsgi.application'

@@ -1,2 +1,0 @@
-SHELL=/bin/sh
-0 3 * * * www cd /home/www/wereldontdooien && ./publish.sh
