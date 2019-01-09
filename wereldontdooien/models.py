@@ -1,7 +1,6 @@
 from uuid import uuid4
 from django.db import models
 from django.contrib.auth.models import User
-from adminsortable.models import Sortable
 
 def imgfile(instance, filename):
     ext = filename.split('.')[-1]
@@ -25,19 +24,20 @@ class BaseFonkel(models.Model):
             ))
     tekst = models.CharField(max_length=1000)
     afbeelding = models.ImageField(upload_to=imgfile)
-    gebruiker = models.ForeignKey(User)
+    gebruiker = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __unicode__(self):
         return self.tekst
 
     class Meta:
         abstract = True
+        ordering = ['aangemaakt']
 
-class UnpublishedFonkel(Sortable, BaseFonkel):
+class UnpublishedFonkel(BaseFonkel):
     def get_absolute_url(self):
         return "/nadja/%i/" % self.id
 
-    class Meta(Sortable.Meta):
+    class Meta:
         verbose_name = "toekomstige fonkel"
 
     def publish(self):

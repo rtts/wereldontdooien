@@ -8,6 +8,12 @@ import json
 
 EMPTY_DB_ERROR = "Oh oh! De wereldontdooisters hebben nog geen fonkels toegevoegd!"
 
+def newhome(request):
+    current = Fonkel.objects.order_by("?").first()
+    return render(request, "index.html", {
+        "current": current,
+    })
+
 def home(request):
     try:
         current = Fonkel.objects.all()[0]
@@ -28,12 +34,12 @@ def nadja(request, nr=''):
     current = get_object_or_404(UnpublishedFonkel, id=nr)
     try:
         previous = UnpublishedFonkel.objects.order_by("-order").filter(order__lt=current.order)[0]
-        print "Before %d comes %d" % (current.id, previous.id);
+        print ("Before %d comes %d" % (current.id, previous.id))
     except IndexError:
         previous = False
     try:
         next = UnpublishedFonkel.objects.order_by("order").filter(order__gt=current.order)[0]
-        print "After %d comes %d" % (current.id, next.id);
+        print ("After %d comes %d" % (current.id, next.id))
     except IndexError:
         next = False
     return render(request, "index.html", {

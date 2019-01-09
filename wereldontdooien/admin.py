@@ -1,11 +1,10 @@
 from django.contrib import admin
-from adminsortable.admin import SortableAdmin
 from wereldontdooien.models import UnpublishedFonkel, PublishedFonkel
 
 def publicatiedatum(fonkel):
     return fonkel.aangemaakt
 
-class UnpublishedAdmin(SortableAdmin):
+class UnpublishedAdmin(admin.ModelAdmin):
     list_display = ("aangemaakt", "gebruiker", "tekst", "type",)
     list_display_links = ("tekst",)
     list_filter = ("type", "gebruiker",)
@@ -24,7 +23,7 @@ class PublishedAdmin(admin.ModelAdmin):
     fields = ("type", "tekst", "afbeelding",)
 
     def has_add_permission(self, request, obj=None):
-        return False    
+        return False
 
     class Media:
         css = { "all": ("moment_admin.css",)}
